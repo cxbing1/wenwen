@@ -1,7 +1,11 @@
 package com.xbcheng.wenwen.model;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+
 import java.util.Date;
 
+@Document(indexName = "note",type = "question")
 public class Question {
     private Integer id;
 

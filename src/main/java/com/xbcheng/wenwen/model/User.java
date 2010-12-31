@@ -1,8 +1,6 @@
 package com.xbcheng.wenwen.model;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "person",type = "user")
 public class User {
     private Integer id;
 

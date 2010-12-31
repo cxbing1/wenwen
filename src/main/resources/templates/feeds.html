@@ -51,7 +51,7 @@
                     </div>
                     <div class="yahoo2" th:if="${pageInfo.pages}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
                         <a th:href="@{'pullfeeds'}" th:unless="${pageInfo.isFirstPage}">首页</a>
-                        <a class="disabled" th:if="${pageInfo.pageNum}>1" th:href="@{'index?pageNum='+${pageInfo.prePage}}"> < </a>
+                        <a class="disabled" th:if="${pageInfo.pageNum}>1" th:href="@{'pullfeeds?pageNum='+${pageInfo.prePage}}"> < </a>
                         <span th:each="page:${#numbers.sequence(startPage,endPage)}" >
                             <span class="current" th:if="${page}==${pageInfo.pageNum} ">[[${page}]]</span>
                             <a th:if="${page}!=${pageInfo.pageNum} and ${page}!=0"  th:href="@{'pullfeeds?pageNum='+${page}}">[[${page}]]</a>

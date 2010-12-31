@@ -18,7 +18,7 @@
         var that = this;
         PopupAdd.show({
             ok: function () {
-                window.location.replace("/");
+                window.location.replace("/wenwen");
             }
         });
     }
@@ -27,7 +27,7 @@
             var that = this;
             PopupMsg.show({
                 ok: function () {
-                    window.location.replace("/msg/list");
+                    window.location.replace("/wenwen/msg/list");
                 }
             });
         }

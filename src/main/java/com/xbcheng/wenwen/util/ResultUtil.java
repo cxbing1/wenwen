@@ -49,6 +49,14 @@ public class ResultUtil {
         return jsonObject.toJSONString();
     }
 
+    public static String getJsonString(int code,String msg,Object data){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("msg",msg);
+        jsonObject.put("data",data);
+        return jsonObject.toJSONString();
+    }
+
     public static String getJsonString(int code,Map<String,Object> map){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",code);
@@ -57,4 +65,5 @@ public class ResultUtil {
         }
         return jsonObject.toJSONString();
     }
+
 }

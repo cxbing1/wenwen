@@ -1,16 +1,17 @@
 package com.xbcheng.wenwen.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xbcheng.wenwen.mapper.UserMapper;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
-import com.xbcheng.wenwen.repository.UserRepository;
 import com.xbcheng.wenwen.service.CommentService;
 import com.xbcheng.wenwen.service.FollowService;
 import com.xbcheng.wenwen.service.QuestionService;
 import com.xbcheng.wenwen.service.UserService;
 import com.xbcheng.wenwen.util.EntityType;
+import com.xbcheng.wenwen.util.ResultUtil;
 import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +30,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private FollowService followService;
@@ -136,6 +134,50 @@ public class UserController {
         return "profile";
 
 
+    }
+
+    @ResponseBody
+    @PostMapping("/android/login")
+    public String anroidLogin(@RequestBody JSONObject jsonObject){
+        String username = jsonObject.getString("username");
+        String password = jsonObject.getString("password");
+        System.out.println(username+password);
+        Map<String,Object> map = userService.loginService(username,password);
+        if(map.containsKey("msg")){
+            //model.addAttribute("msg",map.get("msg"));
+            return ResultUtil.fail((String)map.get("msg"));
+        }
+
+
+        return ResultUtil.getJsonString(0,map.get("user"));
+    }
+
+    @ResponseBody
+    @PostMapping("/android/regiser")
+    public String anroidRegister(@RequestBody JSONObject jsonObject){
+        String username = jsonObject.getString("username");
+        String password = jsonObject.getString("password");
+        Map<String,Object> map= userService.registerService(username, password);
+
+        if(map.containsKey("msg")){
+            //model.addAttribute("msg",map.get("msg"));
+            return ResultUtil.fail((String)map.get("msg"));
+        }
+
+
+        return ResultUtil.getJsonString(0,map.get("user"));
+    }
+
+    @ResponseBody
+    @PostMapping("/android/getUserById")
+    public String anroidGetUserById(@RequestBody JSONObject jsonObject){
+        int userId = jsonObject.getInteger("userId");
+        User user = userService.findById(userId);
+        if(user==null){
+            return ResultUtil.fail("用户不存在");
+        }
+
+        return ResultUtil.getJsonString(0,user);
     }
 
 

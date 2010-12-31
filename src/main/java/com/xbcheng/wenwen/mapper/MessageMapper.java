@@ -26,6 +26,8 @@ public interface MessageMapper {
 
     List<Message> selectConversationList(Integer userId);
 
+    List<Message> selectToMeMessageList(Integer userId);
+
     int getConversationUnreadCount(@Param("conversationId") String conversationId,@Param("userId")Integer userId);
 
     int updateHasRead(@Param("conversationId") String conversationId,@Param("userId")Integer userId);

@@ -159,7 +159,13 @@
     order by created_date desc
   </select>
 
-
+  <select id = "selectToMeMessageList" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select *
+    from
+    message
+    where to_id = #{userId,jdbcType=INTEGER}
+    order by created_date desc
+  </select>
 
   <select id="getConversationUnreadCount"  resultType="java.lang.Integer">
     select

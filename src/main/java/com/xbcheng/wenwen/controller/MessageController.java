@@ -1,17 +1,16 @@
 package com.xbcheng.wenwen.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xbcheng.wenwen.mapper.UserMapper;
 import com.xbcheng.wenwen.model.Message;
 import com.xbcheng.wenwen.model.User;
+import com.xbcheng.wenwen.service.FriendService;
 import com.xbcheng.wenwen.service.MessageService;
 import com.xbcheng.wenwen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -27,6 +26,9 @@ public class MessageController {
 
     @Autowired
     private UserMapper userService;
+
+    @Autowired
+    private FriendService friendService;
 
     @PostMapping("/msg/addMessage")
     @ResponseBody
@@ -115,5 +117,43 @@ public class MessageController {
 
         return "letter";
 
+    }
+
+
+
+
+    @PostMapping("/android/sendRemindMessage")
+    @ResponseBody
+    public String androidSendRemindMessage(@RequestBody JSONObject jsonObjet){
+        int userId  = jsonObjet.getInteger("userId");
+        String data = jsonObjet.getString("data");
+        return messageService.androidSendRemindMessage(userId,data);
+
+    }
+
+    @PostMapping("/android/getMessageList")
+    @ResponseBody
+    public String androidGetMessageList(@RequestBody JSONObject jsonObjet){
+        int userId  = jsonObjet.getInteger("userId");
+
+        List<Message> messageList = messageService.selectToMeMessageList(userId);
+        if(messageList==null){
+            return ResultUtil.getJsonString(2,"暂无消息");
+        }
+
+        return ResultUtil.getJsonString(0,messageList);
+    }
+
+    @PostMapping("/android/getMessageById")
+    @ResponseBody
+    public String androidGetMessageById(@RequestBody JSONObject jsonObjet){
+        int messageId  = jsonObjet.getInteger("messageId");
+
+       Message message = messageService.findMessageById(messageId);
+       if(message==null){
+           ResultUtil.fail("消息不存在");
+       }
+
+        return ResultUtil.getJsonString(0,message);
     }
 }

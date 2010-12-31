@@ -22,13 +22,13 @@ public class LoginHandlerIntercepter implements HandlerInterceptor {
         System.out.println("preHandle..."+request.getRequestURI());
         if(request.getSession().getAttribute("user")==null){
             request.setAttribute("msg","请先登陆！");
-            response.sendRedirect("/reglogin?next="+request.getRequestURI());
+            response.sendRedirect("/wenwen/reglogin?next="+request.getServletPath());
             return false;
         }
 
         if(request.getRequestURI().contains("/user/-1")){
             User user = (User) request.getSession().getAttribute("user");
-            response.sendRedirect("/user/"+user.getId());
+            response.sendRedirect("/wenwen/user/"+user.getId());
         }
 
 

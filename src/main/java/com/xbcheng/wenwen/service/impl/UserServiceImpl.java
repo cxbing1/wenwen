@@ -44,10 +44,8 @@ public class UserServiceImpl implements UserService {
         user.setHeadUrl("aadd7b895_m.jpg");
 
         userMapper.insertSelective(user);
-        map.put("user",user);
+        map.put("user",userMapper.selectByName(user.getName()));
         return map;
-
-
     }
 
     @Override
