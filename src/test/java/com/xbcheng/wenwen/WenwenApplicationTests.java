@@ -11,6 +11,7 @@ public class WenwenApplicationTests {
 
     @Test
     public void contextLoads() {
+        System.out.println("测试一下");
     }
 
 }
