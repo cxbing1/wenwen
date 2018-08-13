@@ -5,10 +5,12 @@ import com.xbcheng.wenwen.model.User;
 import com.xbcheng.wenwen.service.UserService;
 import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.UUID;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired

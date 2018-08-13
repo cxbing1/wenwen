@@ -25,7 +25,7 @@ public class UserController {
     private UserRepository userRepository;
 
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public String register(String userName, String password, Model model, HttpServletRequest request){
 
             String msg = userService.registerService(userName, password);
@@ -38,6 +38,12 @@ public class UserController {
             request.getSession().setAttribute("user",userService.findByName(userName));
             return "index";
 
+    }
+
+    @RequestMapping("/login")
+    public String login(Model model){
+       // model.addAttribute("msg","信息");
+        return "login";
     }
 
 
