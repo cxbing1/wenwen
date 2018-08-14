@@ -28,9 +28,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.xbcheng.wenwen.model.User">
-    insert into user (id, name, password, 
+    insert into user (id, name, password,
       salt, head_url)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{salt,jdbcType=VARCHAR}, #{headUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xbcheng.wenwen.model.User">

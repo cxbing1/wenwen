@@ -26,8 +26,8 @@ public class IndexController {
     @Autowired
     UserMapper userMapper;
 
-    @RequestMapping("/index")
-    public String index(Model model, HttpSession session){
+    @RequestMapping(value={"/index","/"})
+    public String index(Model model){
         List<Integer> list = new ArrayList<>();
 
         for(int i=0;i<10;i++){
@@ -43,7 +43,6 @@ public class IndexController {
         model.addAttribute("list",list);
 
         User user = userMapper.selectByPrimaryKey(1);
-        session.setAttribute("user",user);
 
         return "index";
     }

@@ -7,13 +7,12 @@ import com.xbcheng.wenwen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -25,26 +24,58 @@ public class UserController {
     private UserRepository userRepository;
 
 
-    @PostMapping("/register")
-    public String register(String userName, String password, Model model, HttpServletRequest request){
+    @PostMapping("/reg")
+    public String register(String username, String password, Model model, HttpSession session){
 
-            String msg = userService.registerService(userName, password);
+            Map<String,Object> map= userService.registerService(username, password);
 
-            if(msg!=null){
-                model.addAttribute("msg",msg);
+            if(map.containsKey("msg")){
+                model.addAttribute("msg",map.get("msg"));
                 return "login";
             }
 
-            request.getSession().setAttribute("user",userService.findByName(userName));
-            return "index";
+            session.setAttribute("user",map.get("user"));
+            return "redirect:index";
 
     }
 
-    @RequestMapping("/login")
-    public String login(Model model){
-       // model.addAttribute("msg","信息");
+    @PostMapping("/login")
+    public String login(String username, String password,Model model,HttpSession session){
+
+        Map<String,Object> map = userService.loginService(username,password);
+
+        if(map.containsKey("msg")){
+            model.addAttribute("msg",map.get("msg"));
+            return "login";
+        }
+
+        session.setAttribute("user",map.get("user"));
+        return "redirect:index";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute("user");
+        return "redirect:index";
+    }
+
+    @RequestMapping("/reglogin")
+    public String reglogin(){
         return "login";
     }
+
+    @GetMapping("/user/{id}")
+    public String user(@PathVariable Integer id,Model model){
+
+        User user = userService.findById(id);
+
+        model.addAttribute("user",user);
+
+        return "home";
+
+
+    }
+
 
 
 

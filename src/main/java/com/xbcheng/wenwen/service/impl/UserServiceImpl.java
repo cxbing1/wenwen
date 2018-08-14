@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -17,34 +19,68 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public String registerService(String userName, String password) {
+    public Map<String,Object> registerService(String userName, String password) {
 
+        Map<String,Object>  map = new HashMap<>();
         if(StringUtil.isNullOrEmpty(userName)){
-            return "用户名不能为空";
+            map.put("msg","用户名不能为空");
+            return map;
         }
 
         if(StringUtil.isNullOrEmpty(password)){
-            return "密码不能为空";
+            map.put("msg","密码不能为空");
+            return map;
         }
 
         if(userMapper.selectByName(userName)!=null){
-            return "用户名已存在";
+            map.put("msg","用户名已存在");
+            return map;
         }
 
         User user = new User();
         user.setName(userName);
-        user.setSalt(UUID.randomUUID().toString());
+        user.setSalt(UUID.randomUUID().toString().substring(0,10));
         user.setPassword(DigestUtils.md5DigestAsHex((password+user.getSalt()).getBytes()));
 
-        userMapper.insert(user);
-
-        return null;
+        userMapper.insertSelective(user);
+        map.put("user",user);
+        return map;
 
 
     }
 
     @Override
-    public User findByName(String name) {
-        return userMapper.selectByName(name);
+    public User findById(Integer id) {
+        return userMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public Map<String, Object> loginService(String userName, String password) {
+        Map<String,Object>  map = new HashMap<>();
+        if(StringUtil.isNullOrEmpty(userName)){
+            map.put("msg","用户名不能为空");
+            return map;
+        }
+
+        if(StringUtil.isNullOrEmpty(password)){
+            map.put("msg","密码不能为空");
+            return map;
+        }
+
+        User user = userMapper.selectByName(userName);
+
+        if(user==null){
+            map.put("msg","用户名不存在");
+            return map;
+        }
+        if(!user.getPassword().equals(DigestUtils.md5DigestAsHex((password+user.getSalt()).getBytes()))){
+            map.put("msg","用户名或密码错误");
+            return map;
+        }
+
+        map.put("user",user);
+        return map;
+    }
+
+
 }
