@@ -16,7 +16,7 @@ public class WenwenWebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerIntercepter()).addPathPatterns("/**")
-                .excludePathPatterns("/","/index","/reg","/login","/reglogin","/question","/images/**","/scripts/**","/styles/**");
+                .excludePathPatterns("/","/index","/reg","/login","/logout","/reglogin","/question","/images/**","/scripts/**","/styles/**");
     }
 
 }

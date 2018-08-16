@@ -4,6 +4,7 @@ import com.xbcheng.wenwen.mapper.UserMapper;
 import com.xbcheng.wenwen.model.User;
 import com.xbcheng.wenwen.repository.UserRepository;
 import com.xbcheng.wenwen.service.UserService;
+import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,22 +26,26 @@ public class UserController {
 
 
     @PostMapping("/reg")
-    public String register(String username, String password, Model model, HttpSession session){
+    public String register(String username, String password,String next, Model model, HttpSession session){
 
-            Map<String,Object> map= userService.registerService(username, password);
+        Map<String,Object> map= userService.registerService(username, password);
 
-            if(map.containsKey("msg")){
-                model.addAttribute("msg",map.get("msg"));
-                return "login";
-            }
+        if(map.containsKey("msg")){
+            model.addAttribute("msg",map.get("msg"));
+            return "login";
+        }
 
-            session.setAttribute("user",map.get("user"));
-            return "redirect:index";
+        session.setAttribute("user",map.get("user"));
+
+        if(!StringUtil.isNullOrEmpty(next)){
+            return "redirect:"+next;
+        }
+        return "redirect:/";
 
     }
 
     @PostMapping("/login")
-    public String login(String username, String password,Model model,HttpSession session){
+    public String login(String username, String password,String next,Model model,HttpSession session){
 
         Map<String,Object> map = userService.loginService(username,password);
 
@@ -50,7 +55,11 @@ public class UserController {
         }
 
         session.setAttribute("user",map.get("user"));
-        return "redirect:index";
+
+        if(!StringUtil.isNullOrEmpty(next)){
+            return "redirect:"+next;
+        }
+        return "redirect:/";
     }
 
     @RequestMapping("/logout")
@@ -60,7 +69,8 @@ public class UserController {
     }
 
     @RequestMapping("/reglogin")
-    public String reglogin(){
+    public String reglogin(String next,Model model){
+        model.addAttribute("next",next);
         return "login";
     }
 

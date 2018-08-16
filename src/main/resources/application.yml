@@ -4,7 +4,6 @@
 #    password: 123456
 #    url: jdbc:mysql://localhost:3306/test
 #    driver-class-name: com.mysql.jdbc.Driver
-
 mybatis:
   mapperLocations: classpath:mybatis/mapper/*.xml
 spring:
@@ -41,3 +40,5 @@ spring:
 logging:
   level:
     com.xbcheng: debug
+server:
+  port: 8081

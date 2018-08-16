@@ -22,7 +22,7 @@ public class LoginHandlerIntercepter implements HandlerInterceptor {
         System.out.println("preHandle..."+request.getRequestURI());
         if(request.getSession().getAttribute("user")==null){
             request.setAttribute("msg","请先登陆！");
-            response.sendRedirect("/reglogin");
+            response.sendRedirect("/reglogin?next="+request.getRequestURI());
             return false;
         }
 
