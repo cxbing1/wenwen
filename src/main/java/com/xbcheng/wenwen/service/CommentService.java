@@ -10,11 +10,11 @@ public interface CommentService {
     //增删改查service
     int deleteByPrimaryKey(Integer id);
 
-    String addComment(Comment record);
+    String addComment(Comment comment);
 
     Comment selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKey(Comment record);
+    int updateByPrimaryKey(Comment comment);
 
     List<Comment> selectByEntity(int entityId, int entityType);
 }
