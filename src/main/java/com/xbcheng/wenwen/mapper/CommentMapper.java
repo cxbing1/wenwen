@@ -3,6 +3,8 @@ package com.xbcheng.wenwen.mapper;
 import com.xbcheng.wenwen.model.Comment;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface CommentMapper {
     int deleteByPrimaryKey(Integer id);
@@ -18,4 +20,6 @@ public interface CommentMapper {
     int updateByPrimaryKeyWithBLOBs(Comment record);
 
     int updateByPrimaryKey(Comment record);
+
+    List<Comment> selectByEntity(int entityId, int entityType);
 }

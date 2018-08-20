@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="header::html"></div>
 <link rel="stylesheet" href="../styles/detail.css">
 <div class="zg-wrap zu-main clearfix with-indention-votebar" itemscope="" itemtype="http://schema.org/Question"
@@ -22,12 +24,12 @@
             <div id="zh-question-title" data-editable="true" class="zm-editable-status-normal">
                 <h2 class="zm-item-title">
 
-                    <span class="zm-editable-content">$!{question.title}</span>
+                    <span class="zm-editable-content" th:text="${question.title}">$!{question.title}</span>
 
                 </h2>
             </div>
             <div id="zh-question-detail" class="zm-item-rich-text zm-editable-status-normal">
-                <div class="zm-editable-content">$!{question.content}</div>
+                <div class="zm-editable-content" th:text="${question.content}"></div>
             </div>
             <div class="zm-side-section">
                 <div class="zm-side-section-inner" id="zh-question-side-header-wrap">
