@@ -141,4 +141,23 @@
     order by created_date desc
   </select>
 
+  <select id="selectConversationList" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+      count(id) as id,
+      any_value(from_id) as from_id,
+      any_value(to_id) as to_id,
+      any_value(content) as content,
+      any_value(created_date) as created_date,
+      any_value(has_read) as has_read,
+      any_value(conversation_id) as conversation_id
+    from
+      (select * from message
+        where from_id=#{userId,jdbcType=INTEGER} or to_id=#{userId,jdbcType=INTEGER} order by created_date desc
+      ) as obd
+    group by conversation_id
+    order by created_date desc
+  </select>
+
+
+
 </mapper>
