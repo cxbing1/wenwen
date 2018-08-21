@@ -24,7 +24,7 @@
                             <div class="feed-item-inner">
                                 <div class="avatar">
                                     <a th:title="${vo.user.name}" data-tip="p$t$amuro1230" class="zm-item-link-avatar" target="_blank" href="https://nowcoder.com/people/amuro1230">
-                                        <img th:src="${vo.user.headUrl}" class="zm-item-img-avatar"></a>
+                                        <img th:src="'/images/res/'+${vo.user.headUrl}" class="zm-item-img-avatar"></a>
                                 </div>
                                 <div class="feed-main">
                                     <div class="feed-content" data-za-module="AnswerItem">
@@ -40,7 +40,7 @@
                                                 <a class="zm-item-vote-count js-expand js-vote-count" href="javascript:;" data-bind-votecount="">[[${vo.followCount}]]</a></div>
                                             <div class="zm-item-answer-author-info">
                                                 <a class="author-link" data-tip="p$b$amuro1230" target="_blank" th:href="@{'/user/'+${vo.user.id}}">[[${vo.user.name}]]</a>
-                                                ，[[${#dates.format(vo.question.createdDate,'yyyy-MM-dd')}]]</div>
+                                                ，[[${#dates.format(vo.question.createdDate,'yyyy-MM-dd HH:mm:ss')}]]</div>
                                             <div class="zm-item-vote-info" data-votecount="4168" data-za-module="VoteInfo">
                                                 <span class="voters text">
                                                     <a href="#" class="more text">

@@ -130,4 +130,15 @@
       conversation_id = #{conversationId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByConversationId" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from message
+    where conversation_id = #{conversationId,jdbcType=VARCHAR}
+    order by created_date desc
+  </select>
+
 </mapper>

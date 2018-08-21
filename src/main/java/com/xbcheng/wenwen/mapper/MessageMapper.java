@@ -3,6 +3,8 @@ package com.xbcheng.wenwen.mapper;
 import com.xbcheng.wenwen.model.Message;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface MessageMapper {
     int deleteByPrimaryKey(Integer id);
@@ -18,4 +20,6 @@ public interface MessageMapper {
     int updateByPrimaryKeyWithBLOBs(Message record);
 
     int updateByPrimaryKey(Message record);
+
+    List<Message> selectByConversationId(String conversationId);
 }

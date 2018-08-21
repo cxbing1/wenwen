@@ -7,6 +7,7 @@ import com.xbcheng.wenwen.util.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,10 +22,12 @@ public class CommentController {
         User user = (User) session.getAttribute("user");
 
         Comment comment = new Comment();
+        comment.setUserId(user.getId());
         comment.setContent(content);
         comment.setEntityId(questionId);
         comment.setEntityType(EntityType.ENTITY_QUESTION);
-        return commentService.addComment(comment);
+        commentService.addComment(comment);
 
+        return "redirect:/question/"+questionId;
     }
 }

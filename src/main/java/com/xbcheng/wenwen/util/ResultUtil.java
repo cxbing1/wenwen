@@ -31,4 +31,11 @@ public class ResultUtil {
         jsonObject.put("msg",msg);
         return jsonObject.toJSONString();
     }
+
+    public static String fail(int code,String msg){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("msg",msg);
+        return jsonObject.toJSONString();
+    }
 }

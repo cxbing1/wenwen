@@ -2,6 +2,7 @@ package com.xbcheng.wenwen.mapper;
 
 import com.xbcheng.wenwen.model.Comment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,5 +22,5 @@ public interface CommentMapper {
 
     int updateByPrimaryKey(Comment record);
 
-    List<Comment> selectByEntity(int entityId, int entityType);
+    List<Comment> selectByEntity(@Param("entityId") int entityId,@Param("entityType") int entityType);
 }

@@ -1,6 +1,5 @@
 package com.xbcheng.wenwen.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.xbcheng.wenwen.model.Comment;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
@@ -8,7 +7,6 @@ import com.xbcheng.wenwen.service.CommentService;
 import com.xbcheng.wenwen.service.QuestionService;
 import com.xbcheng.wenwen.service.UserService;
 import com.xbcheng.wenwen.util.EntityType;
-import com.xbcheng.wenwen.util.ViewObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,14 +56,17 @@ public class QuestionController {
 
         List<Comment> commentList = commentService.selectByEntity(qid,EntityType.ENTITY_QUESTION);
 
-        List<ViewObject> vos = new ArrayList<>();
+        List<Map<String,Object>> commentVos = new ArrayList<>();
 
         for(Comment comment:commentList){
-            ViewObject vo = new ViewObject();
+            Map<String,Object> vo= new HashMap<>();
             vo.put("comment",comment);
-            vo.put("commnetUser",comment.getEntityId());
-            vos.add(vo);
+            vo.put("user",userService.findById(comment.getUserId()));
+            vo.put("likeCount",10);
+            commentVos.add(vo);
         }
+
+        model.addAttribute("commentVos",commentVos);
 
         return "detail";
 

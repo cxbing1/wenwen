@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
         user.setName(userName);
         user.setSalt(UUID.randomUUID().toString().substring(0,10));
         user.setPassword(DigestUtils.md5DigestAsHex((password+user.getSalt()).getBytes()));
+        user.setHeadUrl("aadd7b895_m.jpg");
 
         userMapper.insertSelective(user);
         map.put("user",user);

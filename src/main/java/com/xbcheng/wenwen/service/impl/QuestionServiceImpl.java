@@ -21,13 +21,11 @@ public class QuestionServiceImpl implements QuestionService {
         question.setTitle(HtmlUtils.htmlEscape(question.getTitle()));
         question.setContent(HtmlUtils.htmlEscape(question.getContent()));
 
-
-
         if(questionMapper.insertSelective(question)>1){
-            return ResultUtil.success();
-        }
             return ResultUtil.fail();
+        }
 
+        return ResultUtil.success();
     }
 
     @Override

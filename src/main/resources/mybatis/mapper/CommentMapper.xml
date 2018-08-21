@@ -34,6 +34,7 @@
     <include refid="Blob_Column_List" />
     from comment
     where entity_id = #{entityId,jdbcType=INTEGER} AND entity_type = #{entityType,jdbcType=INTEGER}
+    order by created_date desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

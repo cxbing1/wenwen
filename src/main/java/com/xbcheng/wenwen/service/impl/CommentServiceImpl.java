@@ -5,25 +5,27 @@ import com.xbcheng.wenwen.model.Comment;
 import com.xbcheng.wenwen.service.CommentService;
 import com.xbcheng.wenwen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
+@Service
 public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentMapper commentMapper;
     @Override
     public int deleteByPrimaryKey(Integer id) {
-        return commentMapper.deleteByPrimaryKey();
+        return commentMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public String addComment(Comment comment) {
-        comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));
-        if(commentMapper.insert(comment)>1)
-            return ResultUtil.success();
-        return ResultUtil.fail();
+        if(commentMapper.insertSelective(comment)<1)
+            return ResultUtil.fail();
+        return ResultUtil.success();
+
     }
 
     @Override
