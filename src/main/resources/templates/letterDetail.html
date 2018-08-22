@@ -3,11 +3,30 @@
 <div th:replace="header::html"></div>
 <link rel="stylesheet" media="all" href="../styles/letter.css">
 <div id="main">
-    <div class="zg-wrap zu-main clearfix ">
-        <ul class="letter-chatlist">
 
+    <div class="zg-wrap zu-main clearfix ">
+        发私信给 [[${conversationUser.name}]]:
+        <br/>
+        <form action="/msg/sendMessage" method="post">
+            <input type="hidden" name="toName" th:value="${conversationUser.name}"/>
+            <div id="zh-question-answer-form-wrap" class="zh-question-answer-form-wrap">
+                <div class="zm-editable-editor-wrap" style="">
+                    <div class="zm-editable-editor-outer">
+                        <div class="zm-editable-editor-field-wrap">
+                            <textarea name="content" id="content" class="zm-editable-editor-field-element editable" style="width:100%;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="zm-command clearfix">
+                            <span class=" zg-right">
+                                <button type="submit" class="submit-button zg-btn-blue">发送消息</button></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <ul class="letter-chatlist">
             <li id="msg-item-4009580" th:each="messageVo:${messageVos}">
-                <a class="list-head">
+                <a class="list-head" th:href="@{'/user/'+${messageVo.user.id}}">
                     <img alt="头像" th:src="'/images/res/'+${messageVo.user.headUrl}">
                 </a>
                 <div class="tooltip fade right in">
@@ -17,7 +36,8 @@
                             <p class="letter-time" th:text="${#dates.format(messageVo.message.createdDate,'yyyy-MM-dd HH:mm:ss')}">消息时间</p>
                             <!-- <a href="javascript:void(0);" id="del-link" name="4009580">删除</a> -->
                         </div>
-                        <p class="chat-content" th:text="${messageVo.message.content}"></p>
+                        <p class="chat-content" th:if="${messageVo.user.id}==${session.user.id}" th:text="'我：'+${messageVo.message.content}"></p>
+                        <p class="chat-content" th:unless="${messageVo.user.id}==${session.user.id}" th:text="${messageVo.user.name}+'：'+${messageVo.message.content}"></p>
                     </div>
                 </div>
             </li>

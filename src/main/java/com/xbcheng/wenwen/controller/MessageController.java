@@ -48,10 +48,32 @@ public class MessageController {
         return messageService.addMessage(toUser.getId(),user.getId(),content);
 
     }
+    @PostMapping("/msg/sendMessage")
+    public String sendMessage(String toName, String content, HttpSession session){
+
+        if(session.getAttribute("user")==null){
+            return "login";
+        }
+
+        User toUser = userService.selectByName(toName);
+        User user = (User) session.getAttribute("user");
+        messageService.addMessage(toUser.getId(),user.getId(),content);
+
+        return "redirect:/msg/detail?conversationUserId="+toUser.getId();
+
+    }
 
     @GetMapping("/msg/detail")
-    public String getConversationDetail(String conversationId,Model model,HttpSession session){
+    public String getConversationDetail(Integer conversationUserId,Model model,HttpSession session){
 
+        User user = (User)session.getAttribute("user");
+        int userId =user.getId();
+        User conversationUser = userService.selectByPrimaryKey(conversationUserId);
+
+        int minId = userId<conversationUserId?userId:conversationUserId;
+        int maxId = userId>conversationUserId?userId:conversationUserId;
+
+        String conversationId = minId+"_"+maxId;
 
         List<Map<String,Object>> messageVos = new ArrayList<>();
         List<Message> messageList = messageService.selectByConversationId(conversationId);
@@ -62,9 +84,8 @@ public class MessageController {
 
             messageVos.add(vo);
         }
-
+        model.addAttribute("conversationUser",conversationUser);
         model.addAttribute("messageVos",messageVos);
-        User user = (User) session.getAttribute("user");
 
         messageService.updateHasRead(conversationId,user.getId());
 
