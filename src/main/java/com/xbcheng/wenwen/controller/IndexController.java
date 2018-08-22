@@ -5,6 +5,8 @@ import com.xbcheng.wenwen.mapper.UserMapper;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
 import com.xbcheng.wenwen.model.ViewObject;
+import com.xbcheng.wenwen.service.QuestionService;
+import com.xbcheng.wenwen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,29 +23,26 @@ import java.util.Map;
 public class IndexController {
 
     @Autowired
-    QuestionMapper questionMapper;
+    QuestionService questionService;
 
     @Autowired
-    UserMapper userMapper;
+    UserService userService;
 
     @RequestMapping(value={"/index","/"})
     public String index(Model model){
-        List<Integer> list = new ArrayList<>();
 
-        for(int i=0;i<10;i++){
-            list.add(i);
+        List<Map<String,Object> > questionVos = new ArrayList<>();
+        List<Question> questionList = questionService.getQuestionList();
+        for(Question question:questionList){
+            Map<String,Object> vo = new HashMap<>();
+            vo.put("question",question);
+            vo.put("user",userService.findById(question.getUserId()));
+            vo.put("followCount",100);
+
+            questionVos.add(vo);
         }
 
-        Map<String,Object> vo = new HashMap<>();
-        Question question = questionMapper.selectByPrimaryKey(1);
-        vo.put("question",question);
-        vo.put("user",userMapper.selectByPrimaryKey(question.getUserId()));
-        vo.put("followCount",100);
-        model.addAttribute("vo",vo);
-        model.addAttribute("list",list);
-
-        User user = userMapper.selectByPrimaryKey(1);
-
+        model.addAttribute("questionVos",questionVos);
         return "index";
     }
 

@@ -131,6 +131,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+
   <select id="selectByConversationId" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
@@ -141,7 +142,7 @@
     order by created_date desc
   </select>
 
-  <select id="selectConversationList" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="selectConversationList" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select
       count(id) as id,
       any_value(from_id) as from_id,
@@ -152,12 +153,29 @@
       any_value(conversation_id) as conversation_id
     from
       (select * from message
-        where from_id=#{userId,jdbcType=INTEGER} or to_id=#{userId,jdbcType=INTEGER} order by created_date desc
+        where from_id=#{userId,jdbcType=INTEGER} or to_id=#{userId,jdbcType=INTEGER} order by created_date desc limit 0,1000
       ) as obd
     group by conversation_id
     order by created_date desc
   </select>
 
+
+
+  <select id="getConversationUnreadCount"  resultType="java.lang.Integer">
+    select
+    count(id)
+    from message
+    where conversation_id = #{conversationId,jdbcType=VARCHAR} AND to_id=#{userId,jdbcType=INTEGER} AND has_read = 0
+  </select>
+
+  <update id="updateHasRead" >
+    update
+      message
+    set has_read = 1
+    where conversation_id = #{conversationId,jdbcType=VARCHAR}
+          AND to_id=#{userId,jdbcType=INTEGER}
+
+  </update>
 
 
 </mapper>

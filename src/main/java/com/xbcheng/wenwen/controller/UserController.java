@@ -56,7 +56,7 @@ public class UserController {
 
         session.setAttribute("user",map.get("user"));
 
-        if(!StringUtil.isNullOrEmpty(next)){
+        if(!StringUtil.isNullOrEmpty(next)&&!next.equals("/addComment")){
             return "redirect:"+next;
         }
         return "redirect:/";

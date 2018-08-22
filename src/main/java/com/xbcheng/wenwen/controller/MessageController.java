@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -41,12 +42,16 @@ public class MessageController {
         }
 
             User user = (User) session.getAttribute("user");
+        if(user.getName().equals(toName)){
+            return ResultUtil.fail("无法给自己发送信息");
+        }
         return messageService.addMessage(toUser.getId(),user.getId(),content);
 
     }
 
     @GetMapping("/msg/detail")
-    public String getConversationDetail(String conversationId,Model model){
+    public String getConversationDetail(String conversationId,Model model,HttpSession session){
+
 
         List<Map<String,Object>> messageVos = new ArrayList<>();
         List<Message> messageList = messageService.selectByConversationId(conversationId);
@@ -59,9 +64,35 @@ public class MessageController {
         }
 
         model.addAttribute("messageVos",messageVos);
+        User user = (User) session.getAttribute("user");
+
+        messageService.updateHasRead(conversationId,user.getId());
 
         return "letterDetail";
     }
 
+    @RequestMapping("/msg/list")
+    public String getConversationList(Model model,HttpSession session){
 
+        User user = (User) session.getAttribute("user");
+
+        List<Message> conversationList = messageService.getConversationList(user.getId());
+        List<Map<String,Object>> conversationVos = new ArrayList<>();
+
+        int userId = user.getId();
+        for(Message conversation:conversationList){
+            Map<String,Object> vo = new HashMap<>();
+            vo.put("conversation",conversation);
+            int conversationUserId = userId==conversation.getToId()?conversation.getFromId():conversation.getToId();
+            vo.put("user",userService.selectByPrimaryKey(conversationUserId));
+            vo.put("unread",messageService.getConversationUnreadCount(conversation.getConversationId(),userId));
+            conversationVos.add(vo);
+
+        }
+
+        model.addAttribute("conversationVos",conversationVos);
+
+        return "letter";
+
+    }
 }

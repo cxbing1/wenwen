@@ -24,13 +24,20 @@
             <div id="zh-question-title" data-editable="true" class="zm-editable-status-normal">
                 <h2 class="zm-item-title">
 
-                    <span class="zm-editable-content" th:text="${question.title}">$!{question.title}</span>
+                    <span class="zm-editable-content" th:utext="${question.title}">$!{question.title}</span>
 
                 </h2>
             </div>
-            <div id="zh-question-detail" class="zm-item-rich-text zm-editable-status-normal">
-                <div class="zm-editable-content" th:text="${question.content}"></div>
+            <div class="zm-item-answer-author-info">
+                <a class="zm-item-link-avatar avatar-link" href="" target="_blank" data-tip="p$t$yingxiaodao">
+                    <img th:src="'/images/res/'+${user.headUrl}" class="zm-list-avatar avatar"></a>
+                <a class="author-link" data-tip="p$t$yingxiaodao" target="_blank" href="" th:text="${user.name}"></a>
             </div>
+            <br/>
+            <div id="zh-question-detail" class="zm-item-rich-text zm-editable-status-normal">
+                <div class="zm-editable-content" th:utext="${question.content}"></div>
+            </div>
+            <br/>
             <!--
             <div class="zm-side-section">
                 <div class="zm-side-section-inner" id="zh-question-side-header-wrap">
@@ -124,6 +131,7 @@
                 </div>
             </div>
             <a name="draft"></a>
+
 
             <form action="/addComment" method="post">
                 <input type="hidden" name="questionId" th:value="${question.id}"/>

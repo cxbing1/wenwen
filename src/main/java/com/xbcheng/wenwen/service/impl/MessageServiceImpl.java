@@ -46,5 +46,20 @@ public class MessageServiceImpl implements MessageService {
         return messageMapper.selectByConversationId(conversationId);
     }
 
+    @Override
+    public List<Message> getConversationList(int userId) {
+        return messageMapper.selectConversationList(userId);
+    }
+
+    @Override
+    public int getConversationUnreadCount(String conversationId, Integer userId) {
+        return messageMapper.getConversationUnreadCount(conversationId,userId);
+    }
+
+    @Override
+    public int updateHasRead(String conversationId, Integer userId) {
+        return messageMapper.updateHasRead(conversationId,userId);
+    }
+
 
 }

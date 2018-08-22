@@ -118,4 +118,15 @@
       comment_count = #{commentCount,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectList" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from question
+    order by created_date desc
+    limit 0,10
+  </select>
 </mapper>

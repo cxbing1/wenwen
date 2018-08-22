@@ -2,6 +2,7 @@ package com.xbcheng.wenwen.mapper;
 
 import com.xbcheng.wenwen.model.Message;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,10 @@ public interface MessageMapper {
     int updateByPrimaryKey(Message record);
 
     List<Message> selectByConversationId(String conversationId);
+
+    List<Message> selectConversationList(Integer userId);
+
+    int getConversationUnreadCount(@Param("conversationId") String conversationId,@Param("userId")Integer userId);
+
+    int updateHasRead(@Param("conversationId") String conversationId,@Param("userId")Integer userId);
 }

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 import org.unbescape.html.HtmlEscape;
 
+import java.util.List;
+
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
@@ -31,5 +33,10 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Question selectById(int id) {
         return questionMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Question> getQuestionList() {
+        return questionMapper.selectList();
     }
 }

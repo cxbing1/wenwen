@@ -8,4 +8,8 @@ public interface MessageService {
 
     public String addMessage(int toId,int fromId,String content);
     public List<Message> selectByConversationId(String conversationId);
+    public List<Message> getConversationList(int userId);
+    public int getConversationUnreadCount(String conversationId,Integer userId);
+    public int updateHasRead(String conversationId,Integer userId);
+
 }
