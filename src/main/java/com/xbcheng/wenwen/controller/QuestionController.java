@@ -4,6 +4,7 @@ import com.xbcheng.wenwen.model.Comment;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
 import com.xbcheng.wenwen.service.CommentService;
+import com.xbcheng.wenwen.service.LikeService;
 import com.xbcheng.wenwen.service.QuestionService;
 import com.xbcheng.wenwen.service.UserService;
 import com.xbcheng.wenwen.util.EntityType;
@@ -33,6 +34,11 @@ public class QuestionController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private LikeService likeService;
+
+
+
 
     @PostMapping("/question/add")
     @ResponseBody
@@ -48,7 +54,7 @@ public class QuestionController {
     }
 
     @GetMapping("/question/{qid}")
-    public String questionDetail(@PathVariable int qid, Model model){
+    public String questionDetail(@PathVariable int qid, Model model,HttpSession session){
 
         Question question = questionService.selectById(qid);
         model.addAttribute("question",question);
@@ -62,7 +68,13 @@ public class QuestionController {
             Map<String,Object> vo= new HashMap<>();
             vo.put("comment",comment);
             vo.put("user",userService.findById(comment.getUserId()));
-            vo.put("likeCount",10);
+            vo.put("likeCount",likeService.getLikeCount(EntityType.ENTITY_COMMENT,comment.getId()));
+            if(session.getAttribute("user")==null){
+                vo.put("liked",0);
+            }else{
+                User hostUser = (User)session.getAttribute("user");
+                vo.put("liked",likeService.getLikeStatus(hostUser.getId(),EntityType.ENTITY_COMMENT,comment.getId()));
+            }
             commentVos.add(vo);
         }
 

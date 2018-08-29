@@ -17,7 +17,6 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
-
     ######################### Druid连接池的配置信息  #################
     initialSize: 5                                 #初始化连接大小
     minIdle: 5                                     #最小连接池数量
@@ -36,6 +35,15 @@ spring:
   thymeleaf:
     cache: false
     suffix: .html
+  redis:
+    host: 120.79.198.163
+    port: 6379
+    password: 123456
+    poolMaxTotal: 8   #最大连接池
+    poolMaxIdle: 8    #最大休闲连接
+    poolMaxWait: 1000
+    database: 9
+    timeout: 1000
 
 logging:
   level:
