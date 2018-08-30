@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.List;
+
 @Component
 public class JedisAdapter {
 
@@ -71,5 +73,35 @@ public class JedisAdapter {
             }
         }
         return 0;
+    }
+
+    public long lpush(String key,String object){
+        Jedis jedis = null;
+        try{
+            jedis = jedisPool.getResource();
+            return jedis.lpush(key,object);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(jedis!=null){
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
+    public List<String> brpop(int timeout,String key){
+        Jedis jedis = null;
+        try{
+            jedis = jedisPool.getResource();
+            return jedis.brpop(timeout,key);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(jedis!=null){
+                jedis.close();
+            }
+        }
+        return null;
     }
 }

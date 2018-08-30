@@ -1,5 +1,9 @@
 package com.xbcheng.wenwen.service.impl;
 
+import com.xbcheng.wenwen.async.EventModel;
+import com.xbcheng.wenwen.async.EventProducer;
+import com.xbcheng.wenwen.async.EventType;
+import com.xbcheng.wenwen.mapper.CommentMapper;
 import com.xbcheng.wenwen.service.LikeService;
 import com.xbcheng.wenwen.util.JedisAdapter;
 import com.xbcheng.wenwen.util.RedisKeyUtil;
@@ -12,6 +16,11 @@ public class LikeServiceImpl implements LikeService {
     @Autowired
     private JedisAdapter jedisAdapter;
 
+    @Autowired
+    private EventProducer eventProducer;
+
+    private CommentMapper commentMapper;
+
     @Override
     public long like(int userId, int entityType, int entityId) {
         String likeKey = RedisKeyUtil.getLikeKey(entityType,entityId);
@@ -19,6 +28,19 @@ public class LikeServiceImpl implements LikeService {
 
         jedisAdapter.sadd(likeKey,String.valueOf(userId));
         jedisAdapter.srem(disLikeKey,String.valueOf(userId));
+
+
+        EventModel eventModel = new EventModel();
+        eventModel.setEventType(EventType.LIKE);
+        eventModel.setActionId(userId);
+        eventModel.setEntityType(entityType);
+        eventModel.setEntityId(entityId);
+        eventModel.setExts("questionId",String.valueOf(commentMapper.selectByPrimaryKey(entityId).getEntityId()));
+        eventModel.setEntityOwnerId(commentMapper.selectByPrimaryKey(entityId).getUserId());
+        //将点赞通知事件放入异步队列 
+        eventProducer.fireEvent(eventModel);
+
+
 
         return jedisAdapter.scard(likeKey);
 

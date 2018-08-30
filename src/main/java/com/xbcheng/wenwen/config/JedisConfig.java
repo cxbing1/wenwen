@@ -44,7 +44,5 @@ public class JedisConfig {
         return new JedisPool(jedisPoolConfig,host,port,timeout,password);
     }
 
-    public User getUser(){
-        return new User();
-    }
+
 }
