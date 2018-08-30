@@ -19,12 +19,17 @@ public class LikeServiceImpl implements LikeService {
     @Autowired
     private EventProducer eventProducer;
 
+    @Autowired
     private CommentMapper commentMapper;
 
     @Override
     public long like(int userId, int entityType, int entityId) {
         String likeKey = RedisKeyUtil.getLikeKey(entityType,entityId);
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityType,entityId);
+
+        if(jedisAdapter.sismember(likeKey,String.valueOf(userId))){
+            return jedisAdapter.scard(likeKey);
+        }
 
         jedisAdapter.sadd(likeKey,String.valueOf(userId));
         jedisAdapter.srem(disLikeKey,String.valueOf(userId));

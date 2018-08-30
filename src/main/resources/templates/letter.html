@@ -22,12 +22,12 @@
                     <div class="chat-headbox">
                         <span class="msg-num" th:text="${conversationVo.unread}" th:if="${conversationVo.unread}>0">99+</span>
                         <a class="list-head">
-                            <img alt="头像" th:src="'/images/res/'+${conversationVo.user.headUrl}">
+                            <img alt="头像" th:src="'/images/res/'+${conversationVo.user.headUrl}" >
                         </a>
                     </div>
                     <div class="letter-detail">
-                        <a title="通知" class="letter-name level-color-1" th:text="${conversationVo.user.name}">
-                            会话用户名
+                        <a title="通知" class="letter-name level-color-1" th:text="${conversationVo.user.name}" >
+                            系统通知
                         </a>
                         <p class="letter-brief" th:text="${conversationVo.conversation.content}">
                             会话最新消息
