@@ -3,10 +3,7 @@ package com.xbcheng.wenwen.controller;
 import com.xbcheng.wenwen.model.Comment;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
-import com.xbcheng.wenwen.service.CommentService;
-import com.xbcheng.wenwen.service.LikeService;
-import com.xbcheng.wenwen.service.QuestionService;
-import com.xbcheng.wenwen.service.UserService;
+import com.xbcheng.wenwen.service.*;
 import com.xbcheng.wenwen.util.EntityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +34,8 @@ public class QuestionController {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private FollowService followService;
 
 
 
@@ -55,10 +54,22 @@ public class QuestionController {
 
     @GetMapping("/question/{qid}")
     public String questionDetail(@PathVariable int qid, Model model,HttpSession session){
+        User hostUser = (User) session.getAttribute("user");
 
         Question question = questionService.selectById(qid);
         model.addAttribute("question",question);
         model.addAttribute("user",userService.findById(question.getUserId()));
+
+        model.addAttribute("followed",hostUser!=null&&followService.isFollower(hostUser.getId(),EntityType.ENTITY_QUESTION,qid));
+        List<Integer> followUserIds = followService.getFollowers(EntityType.ENTITY_QUESTION,qid,0,10);
+        List<User> followUsers = new ArrayList<>();
+
+        for(int id : followUserIds){
+            followUsers.add(userService.findById(id));
+        }
+
+        model.addAttribute("followUsers",followUsers);
+
 
         List<Comment> commentList = commentService.selectByEntity(qid,EntityType.ENTITY_QUESTION);
 
@@ -69,10 +80,9 @@ public class QuestionController {
             vo.put("comment",comment);
             vo.put("user",userService.findById(comment.getUserId()));
             vo.put("likeCount",likeService.getLikeCount(EntityType.ENTITY_COMMENT,comment.getId()));
-            if(session.getAttribute("user")==null){
+            if(hostUser==null){
                 vo.put("liked",0);
             }else{
-                User hostUser = (User)session.getAttribute("user");
                 vo.put("liked",likeService.getLikeStatus(hostUser.getId(),EntityType.ENTITY_COMMENT,comment.getId()));
             }
             commentVos.add(vo);

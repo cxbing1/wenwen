@@ -13,9 +13,19 @@ public class EventModel {
 
      private Map<String,String> exts = new HashMap<>();
 
+     public EventModel(){}
 
-     public void setExts(String key,String value) {
+     public EventModel(EventType eventType, int actionId, int entityType, int entityId, int entityOwnerId) {
+          this.eventType = eventType;
+          this.actionId = actionId;
+          this.entityType = entityType;
+          this.entityId = entityId;
+          this.entityOwnerId = entityOwnerId;
+     }
+
+     public EventModel setExts(String key, String value) {
           exts.put(key,value);
+          return this;
      }
 
      public String getExts(String key) {

@@ -4,6 +4,7 @@ import com.xbcheng.wenwen.async.EventModel;
 import com.xbcheng.wenwen.async.EventProducer;
 import com.xbcheng.wenwen.async.EventType;
 import com.xbcheng.wenwen.model.User;
+import com.xbcheng.wenwen.service.CommentService;
 import com.xbcheng.wenwen.service.LikeService;
 import com.xbcheng.wenwen.util.EntityType;
 import com.xbcheng.wenwen.util.ResultUtil;
@@ -20,8 +21,6 @@ public class LikeController {
     @Autowired
     private LikeService likeService;
 
-
-
     @ResponseBody
     @PostMapping("/like")
     public String like(int commentId, HttpSession session){
@@ -31,7 +30,6 @@ public class LikeController {
         }
 
         long likeCount = likeService.like(user.getId(), EntityType.ENTITY_COMMENT,commentId);
-
 
         return ResultUtil.success(String.valueOf(likeCount));
     }

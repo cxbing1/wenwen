@@ -3,7 +3,7 @@ package com.xbcheng.wenwen.async;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.xbcheng.wenwen.async.handler.EventHandler;
 import com.xbcheng.wenwen.util.JedisAdapter;
 import com.xbcheng.wenwen.util.RedisKeyUtil;
 import org.slf4j.LoggerFactory;

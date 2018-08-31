@@ -1,6 +1,7 @@
-package com.xbcheng.wenwen.async;
+package com.xbcheng.wenwen.async.handler;
 
-import com.xbcheng.wenwen.model.Message;
+import com.xbcheng.wenwen.async.EventModel;
+import com.xbcheng.wenwen.async.EventType;
 import com.xbcheng.wenwen.service.MessageService;
 import com.xbcheng.wenwen.service.UserService;
 import com.xbcheng.wenwen.util.EntityType;

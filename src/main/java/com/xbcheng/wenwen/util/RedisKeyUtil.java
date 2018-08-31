@@ -13,4 +13,12 @@ public class RedisKeyUtil {
     public static String getEventQueueKey(){
         return "EventQueue";
     }
+
+    public static String getFollowerKey(int entityType,int entityId){
+        return "Follower"+":"+entityType+":"+entityId;
+    }
+
+    public static String getFolloweeKey(int userId,int entityType){
+        return "Followee"+":"+userId+":"+entityType;
+    }
 }

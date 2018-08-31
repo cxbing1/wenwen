@@ -25,6 +25,7 @@ public class ResultUtil {
         return jsonObject.toJSONString();
     }
 
+
     public static String fail(String msg){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",1);
@@ -36,6 +37,13 @@ public class ResultUtil {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",code);
         jsonObject.put("msg",msg);
+        return jsonObject.toJSONString();
+    }
+
+    public static String getJsonString(int code,Object object){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("data",object);
         return jsonObject.toJSONString();
     }
 }

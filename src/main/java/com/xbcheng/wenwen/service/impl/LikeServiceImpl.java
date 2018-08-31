@@ -4,7 +4,9 @@ import com.xbcheng.wenwen.async.EventModel;
 import com.xbcheng.wenwen.async.EventProducer;
 import com.xbcheng.wenwen.async.EventType;
 import com.xbcheng.wenwen.mapper.CommentMapper;
+import com.xbcheng.wenwen.service.CommentService;
 import com.xbcheng.wenwen.service.LikeService;
+import com.xbcheng.wenwen.util.EntityType;
 import com.xbcheng.wenwen.util.JedisAdapter;
 import com.xbcheng.wenwen.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,10 @@ public class LikeServiceImpl implements LikeService {
     private JedisAdapter jedisAdapter;
 
     @Autowired
-    private EventProducer eventProducer;
+    private CommentService commentService;
 
     @Autowired
-    private CommentMapper commentMapper;
+    private EventProducer eventProducer;
 
     @Override
     public long like(int userId, int entityType, int entityId) {
@@ -31,20 +33,12 @@ public class LikeServiceImpl implements LikeService {
             return jedisAdapter.scard(likeKey);
         }
 
+        //将点赞通知事件放入异步队列
+        eventProducer.fireEvent(new EventModel(EventType.LIKE,userId, entityType,entityId,commentService.selectByPrimaryKey(entityId).getUserId())
+                .setExts("questionId",String.valueOf(commentService.selectByPrimaryKey(entityId).getEntityId())));
+
         jedisAdapter.sadd(likeKey,String.valueOf(userId));
         jedisAdapter.srem(disLikeKey,String.valueOf(userId));
-
-
-        EventModel eventModel = new EventModel();
-        eventModel.setEventType(EventType.LIKE);
-        eventModel.setActionId(userId);
-        eventModel.setEntityType(entityType);
-        eventModel.setEntityId(entityId);
-        eventModel.setExts("questionId",String.valueOf(commentMapper.selectByPrimaryKey(entityId).getEntityId()));
-        eventModel.setEntityOwnerId(commentMapper.selectByPrimaryKey(entityId).getUserId());
-        //将点赞通知事件放入异步队列 
-        eventProducer.fireEvent(eventModel);
-
 
 
         return jedisAdapter.scard(likeKey);

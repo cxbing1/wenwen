@@ -5,8 +5,10 @@ import com.xbcheng.wenwen.mapper.UserMapper;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
 import com.xbcheng.wenwen.model.ViewObject;
+import com.xbcheng.wenwen.service.FollowService;
 import com.xbcheng.wenwen.service.QuestionService;
 import com.xbcheng.wenwen.service.UserService;
+import com.xbcheng.wenwen.util.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,9 @@ public class IndexController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    FollowService followService;
+
     @RequestMapping(value={"/index","/"})
     public String index(Model model){
 
@@ -37,8 +42,7 @@ public class IndexController {
             Map<String,Object> vo = new HashMap<>();
             vo.put("question",question);
             vo.put("user",userService.findById(question.getUserId()));
-            vo.put("followCount",100);
-
+            vo.put("followCount",followService.getFollowersCount(EntityType.ENTITY_QUESTION,question.getId()));
             questionVos.add(vo);
         }
 
