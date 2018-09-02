@@ -22,5 +22,5 @@ public interface CommentMapper {
 
     int updateByPrimaryKey(Comment record);
 
-    List<Comment> selectByEntity(@Param("entityId") int entityId,@Param("entityType") int entityType);
+    List<Comment> selectSelective(Comment comment);
 }

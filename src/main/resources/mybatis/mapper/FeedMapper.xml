@@ -90,4 +90,15 @@
       type = #{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getUserFeeds" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from feed
+    where user_id in
+    <foreach collection="userIdList" item="userId" index="index" open="(" close=")" separator=",">
+      #{userId,jdbcType=INTEGER}
+    </foreach>
+  </select>
+
 </mapper>

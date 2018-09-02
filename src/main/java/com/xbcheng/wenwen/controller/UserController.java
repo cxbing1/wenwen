@@ -1,9 +1,14 @@
 package com.xbcheng.wenwen.controller;
 
 import com.xbcheng.wenwen.mapper.UserMapper;
+import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
 import com.xbcheng.wenwen.repository.UserRepository;
+import com.xbcheng.wenwen.service.CommentService;
+import com.xbcheng.wenwen.service.FollowService;
+import com.xbcheng.wenwen.service.QuestionService;
 import com.xbcheng.wenwen.service.UserService;
+import com.xbcheng.wenwen.util.EntityType;
 import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +30,17 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FollowService followService;
+
+    @Autowired
+    private QuestionService questionService;
+
+    @Autowired
+    private  CommentService commentService;
+
+
 
 
     @PostMapping("/reg")
@@ -74,14 +92,40 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/user/{id}")
-    public String user(@PathVariable Integer id,Model model){
+    @GetMapping("/user/{userId}")
+    public String user(@PathVariable Integer userId,Model model,HttpSession session){
 
-        User user = userService.findById(id);
+        User user = userService.findById(userId);
 
-        model.addAttribute("user",user);
+        model.addAttribute("curUser",user);
 
-        return "home";
+        Map<String ,Object> profileUser = new HashMap<>();
+        profileUser.put("user",user);
+        profileUser.put("followerCount",followService.getFollowersCount(EntityType.ENTITY_USER,userId));
+        profileUser.put("followeeCount",followService.getFolloweesCount(userId,EntityType.ENTITY_USER));
+
+        User hostUser = (User)session.getAttribute("user");
+        profileUser.put("followed",followService.isFollower(hostUser.getId(),EntityType.ENTITY_USER,userId));
+        profileUser.put("commentCount",commentService.selectByUserId(user.getId()).size());
+
+        List<Question> questionList = questionService.getQuestionListByUserId(userId);
+
+        List<Map<String,Object>> questionVos = new ArrayList<>();
+
+        for(Question question : questionList){
+            Map<String,Object> questionVo = new HashMap<>();
+
+            questionVo.put("question",question);
+            questionVo.put("user",userService.findById(question.getUserId()));
+            questionVo.put("followCount",followService.getFollowersCount(EntityType.ENTITY_QUESTION,question.getId()));
+            questionVos.add(questionVo);
+        }
+
+        model.addAttribute("profileUser",profileUser);
+
+        model.addAttribute("questionVos",questionVos);
+
+        return "profile";
 
 
     }

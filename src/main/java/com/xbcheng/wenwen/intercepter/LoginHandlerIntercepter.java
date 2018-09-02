@@ -26,6 +26,12 @@ public class LoginHandlerIntercepter implements HandlerInterceptor {
             return false;
         }
 
+        if(request.getRequestURI().contains("/user/-1")){
+            User user = (User) request.getSession().getAttribute("user");
+            response.sendRedirect("/user/"+user.getId());
+        }
+
+
         return true;
     }
 

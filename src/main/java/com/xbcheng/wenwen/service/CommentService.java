@@ -17,4 +17,6 @@ public interface CommentService {
     int updateByPrimaryKey(Comment comment);
 
     List<Comment> selectByEntity(int entityId, int entityType);
+
+    List<Comment> selectByUserId(int userId);
 }

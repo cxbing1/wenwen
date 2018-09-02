@@ -55,7 +55,7 @@
                             <a href="javascript:void(0);"><strong class="js-user-count">[[${followUsers.size()}]]</strong></a>人关注该问题
                         </div>
                         <div class="list zu-small-avatar-list zg-clear js-user-list">
-                            <a th:class="'zm-item-link-avatar js-user-'+${vo.id}" th:href="@{'/user/'${vo.id}}" th:each="vo:${followUsers}"
+                            <a th:class="'zm-item-link-avatar js-user-'+${vo.id}" th:href="@{'/user/'+${vo.id}}" th:each="vo:${followUsers}"
                                th:data-original_title="${vo.name}">
                                 <img th:src="'/images/res/'+${vo.headUrl}"
                                      class="zm-item-img-avatar">

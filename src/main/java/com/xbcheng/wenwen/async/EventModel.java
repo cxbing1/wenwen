@@ -37,48 +37,54 @@ public class EventModel {
           return eventType;
      }
 
-     public void setEventType(EventType eventType) {
+     public EventModel setEventType(EventType eventType) {
           this.eventType = eventType;
+          return this;
      }
 
      public int getActionId() {
           return actionId;
      }
 
-     public void setActionId(int actionId) {
+     public EventModel setActionId(int actionId) {
           this.actionId = actionId;
+          return this;
      }
 
      public int getEntityType() {
           return entityType;
      }
 
-     public void setEntityType(int entityType) {
+     public EventModel setEntityType(int entityType) {
           this.entityType = entityType;
+          return this;
      }
 
      public int getEntityId() {
           return entityId;
      }
 
-     public void setEntityId(int entityId) {
+     public EventModel setEntityId(int entityId) {
           this.entityId = entityId;
+          return this;
      }
 
      public int getEntityOwnerId() {
           return entityOwnerId;
      }
 
-     public void setEntityOwnerId(int entityOwnerId) {
+     public EventModel setEntityOwnerId(int entityOwnerId) {
           this.entityOwnerId = entityOwnerId;
+          return this;
      }
 
      public Map<String, String> getExts() {
           return exts;
      }
 
-     public void setExts(Map<String, String> exts) {
+     public EventModel setExts(Map<String, String> exts) {
           this.exts = exts;
+          return this;
      }
 
 

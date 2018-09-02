@@ -5,6 +5,7 @@ import com.xbcheng.wenwen.mapper.UserMapper;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
 import com.xbcheng.wenwen.model.ViewObject;
+import com.xbcheng.wenwen.service.CommentService;
 import com.xbcheng.wenwen.service.FollowService;
 import com.xbcheng.wenwen.service.QuestionService;
 import com.xbcheng.wenwen.service.UserService;
@@ -45,6 +46,7 @@ public class IndexController {
             vo.put("followCount",followService.getFollowersCount(EntityType.ENTITY_QUESTION,question.getId()));
             questionVos.add(vo);
         }
+
 
         model.addAttribute("questionVos",questionVos);
         return "index";

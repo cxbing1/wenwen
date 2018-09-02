@@ -20,6 +20,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.SchemaOutputResolver;
+
 @Service
 public class EventComsumer implements InitializingBean , ApplicationContextAware {
     private Logger logger = LoggerFactory.getLogger(EventComsumer.class);
@@ -53,25 +55,32 @@ public class EventComsumer implements InitializingBean , ApplicationContextAware
 
             @Override
             public void run() {
+
                 String key = RedisKeyUtil.getEventQueueKey();
-                List<String> events = jedisAdapter.brpop(0,key);
 
-                for(String event : events){
+                while(true){
+                    System.out.println("事件消费者线程正在执行...before");
+                    List<String> events = jedisAdapter.brpop(0,key);
+                    System.out.println("事件消费者线程正在执行...after");
 
-                    if(event.equals(key)){
-                        continue;
-                    }
-                    EventModel eventModel = JSON.parseObject(event,EventModel.class);
+                    for(String event : events){
 
-                    if(!config.containsKey(eventModel.getEventType())){
-                        logger.error("事件类型无法识别");
-                        continue;
-                    }
+                        if(event.equals(key)){
+                            continue;
+                        }
+                        EventModel eventModel = JSON.parseObject(event,EventModel.class);
 
-                    for(EventHandler eventHandler : config.get(eventModel.getEventType())){
-                        eventHandler.doHandle(eventModel);
+                        if(!config.containsKey(eventModel.getEventType())){
+                            logger.error("事件类型无法识别");
+                            continue;
+                        }
+
+                        for(EventHandler eventHandler : config.get(eventModel.getEventType())){
+                            eventHandler.doHandle(eventModel);
+                        }
                     }
                 }
+
             }
         });
 

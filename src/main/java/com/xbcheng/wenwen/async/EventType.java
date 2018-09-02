@@ -7,7 +7,8 @@ public enum EventType {
     LOGIN(2),
     MAIL(3),
     FOLLOW(4),
-    UNFOLLOW(5);
+    UNFOLLOW(5),
+    Question(6);
 
     private int value;
 
@@ -15,4 +16,11 @@ public enum EventType {
         this.value = value;
     }
 
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }

@@ -1,6 +1,9 @@
 package com.xbcheng.wenwen.model;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Date;
+import java.util.Map;
 
 public class Feed {
     private Integer id;
@@ -12,6 +15,8 @@ public class Feed {
     private String data;
 
     private Integer type;
+
+    private JSONObject dataJson;
 
     public Integer getId() {
         return id;
@@ -43,6 +48,7 @@ public class Feed {
 
     public void setData(String data) {
         this.data = data == null ? null : data.trim();
+        dataJson = JSONObject.parseObject(data);
     }
 
     public Integer getType() {
@@ -51,5 +57,9 @@ public class Feed {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String get(String key) {
+        return dataJson.getString(key);
     }
 }

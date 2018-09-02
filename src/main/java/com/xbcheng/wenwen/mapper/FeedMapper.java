@@ -2,6 +2,9 @@ package com.xbcheng.wenwen.mapper;
 
 import com.xbcheng.wenwen.model.Feed;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface FeedMapper {
@@ -16,4 +19,6 @@ public interface FeedMapper {
     int updateByPrimaryKeySelective(Feed record);
 
     int updateByPrimaryKey(Feed record);
+
+    List<Feed> getUserFeeds(@Param("userIdList") List<Integer> userIdList);
 }

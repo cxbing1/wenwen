@@ -8,24 +8,23 @@
             <div class="zm-profile-section-wrap zm-profile-followee-page">
                 <div class="zm-profile-section-head">
                     <span class="zm-profile-section-name">
-                        <a th:href="@{'/user/'+${curUser.getId()}}">[[${curUser.name}]]</a> 关注了 [[${followeeCount}]] 人
+                        <a th:href="@{'/user/'+${curUser.getId()}}">[[${curUser.name}]]</a> 有 [[${followerCount}]] 个粉丝
                     </span>
                 </div>
                 <div class="zm-profile-section-list">
                     <div id="zh-profile-follows-list">
                         <div class="zh-general-list clearfix">
-                            <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard" th:each="vo:${followeeVos}">
+                            <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard" th:each="vo:${followerVos}">
                                 <div th:unless="${vo.user.id}==${session.user.id}">
                                     <div class="zg-right" th:if="${vo.followed}">
                                         <button class="zg-btn zg-btn-unfollow zm-rich-follow-btn small nth-0
-                                    js-follow-user" data-status="1" th:data-id="${vo.user.id}">取消关注</button>
+                                        js-follow-user" data-status="1" th:data-id="${vo.user.id}">取消关注</button>
                                     </div>
-                                    <div class="zg-right" th:unless="${vo.followed}" >
+                                    <div class="zg-right" th:unless="${vo.followed}">
                                         <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
-                                    js-follow-user" th:data-id="${vo.user.id}">关注</button>
+                                        js-follow-user" th:data-id="${vo.user.id}">关注</button>
                                     </div>
                                 </div>
-
 
                                 <a title="Barty" class="zm-item-link-avatar" th:href="@{'/user/'+${vo.user.id}}">
                                     <img th:src="'/images/res/'+${vo.user.headUrl}" class="zm-item-img-avatar">

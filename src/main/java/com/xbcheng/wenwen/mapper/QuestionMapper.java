@@ -3,6 +3,7 @@ package com.xbcheng.wenwen.mapper;
 import com.xbcheng.wenwen.model.Message;
 import com.xbcheng.wenwen.model.Question;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,5 +23,7 @@ public interface QuestionMapper {
 
     int updateByPrimaryKey(Question record);
 
-    List<Question> selectList();
+    List<Question> selectSelective(Question question);
+
+    void updateCommentCount(@Param("id") Integer id);
 }

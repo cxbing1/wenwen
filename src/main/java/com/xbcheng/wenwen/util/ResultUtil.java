@@ -2,6 +2,8 @@ package com.xbcheng.wenwen.util;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.Map;
+
 public class ResultUtil {
 
     public static String success(){
@@ -43,7 +45,16 @@ public class ResultUtil {
     public static String getJsonString(int code,Object object){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",code);
-        jsonObject.put("data",object);
+        jsonObject.put("msg",object);
+        return jsonObject.toJSONString();
+    }
+
+    public static String getJsonString(int code,Map<String,Object> map){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        for(Map.Entry<String,Object> entry : map.entrySet()){
+            jsonObject.put(entry.getKey(),entry.getValue());
+        }
         return jsonObject.toJSONString();
     }
 }

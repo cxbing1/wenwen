@@ -1,5 +1,8 @@
 package com.xbcheng.wenwen.controller;
 
+import com.xbcheng.wenwen.async.EventModel;
+import com.xbcheng.wenwen.async.EventProducer;
+import com.xbcheng.wenwen.async.EventType;
 import com.xbcheng.wenwen.model.Comment;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
@@ -37,6 +40,9 @@ public class QuestionController {
     @Autowired
     private FollowService followService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
 
 
     @PostMapping("/question/add")
@@ -48,7 +54,15 @@ public class QuestionController {
         User user = (User) session.getAttribute("user");
         question.setUserId(user.getId());
 
-        return questionService.addQuestion(question);
+        String result = questionService.addQuestion(question);
+
+        eventProducer.fireEvent(new EventModel().setEventType(EventType.Question)
+                                                .setActionId(user.getId())
+                                                .setEntityType(EntityType.ENTITY_QUESTION)
+                                                .setEntityId(questionService.getByCondition(question).get(0).getId())
+                                                .setEntityOwnerId(user.getId()));
+
+        return result;
 
     }
 

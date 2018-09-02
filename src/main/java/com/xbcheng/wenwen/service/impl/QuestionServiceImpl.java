@@ -37,6 +37,18 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getQuestionList() {
-        return questionMapper.selectList();
+        return questionMapper.selectSelective(new Question());
+    }
+
+    @Override
+    public List<Question> getQuestionListByUserId(int userId) {
+        Question question = new Question();
+        question.setUserId(userId);
+        return questionMapper.selectSelective(question);
+    }
+
+    @Override
+    public List<Question> getByCondition(Question question) {
+        return questionMapper.selectSelective(question);
     }
 }

@@ -44,7 +44,7 @@ public class LikeController {
 
         long likeCount = likeService.disLike(user.getId(), EntityType.ENTITY_COMMENT,commentId);
 
-        return ResultUtil.success(String.valueOf(likeCount));
+        return ResultUtil.success(String.valueOf(likeService.getLikeCount(EntityType.ENTITY_COMMENT,commentId)));
     }
 
 }

@@ -12,4 +12,8 @@ public interface QuestionService {
     public Question selectById(int id);
 
     public List<Question> getQuestionList();
+
+    public List<Question> getQuestionListByUserId(int userId);
+
+    public List<Question> getByCondition(Question question);
 }

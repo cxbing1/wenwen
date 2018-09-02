@@ -27,15 +27,6 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectByEntity"  resultMap="ResultMapWithBLOBs">
-    select
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from comment
-    where entity_id = #{entityId,jdbcType=INTEGER} AND entity_type = #{entityType,jdbcType=INTEGER}
-    order by created_date desc
-  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from comment
@@ -141,4 +132,33 @@
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectSelective" parameterType="com.xbcheng.wenwen.model.Comment" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment
+    where 1=1
+    <if test="userId != null">
+      AND user_id = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="entityId != null">
+      AND entity_id = #{entityId,jdbcType=INTEGER}
+    </if>
+    <if test="entityType != null">
+      AND entity_type = #{entityType,jdbcType=INTEGER}
+    </if>
+    <if test="createdDate != null">
+      AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="status != null">
+      AND status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="content != null">
+      AND content = #{content,jdbcType=LONGVARCHAR}
+    </if>
+
+  </select>
 </mapper>
