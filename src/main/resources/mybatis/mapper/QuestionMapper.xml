@@ -143,12 +143,21 @@
       ANd content = #{content,jdbcType=LONGVARCHAR}
     </if>
     order by created_date desc
-    limit 0,10
   </select>
 
-  <update id="updateCommentCount" parameterType="java.lang.Integer">
+  <update id="updateCommentCount" >
     update question
-    set comment_count=comment_count+1
+    set comment_count=#{value,jdbcType=INTEGER}+comment_count
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="searchQuestion" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+      select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from question
+    where title like '%${keyword}%'
+    order by created_date desc
+  </select>
 </mapper>

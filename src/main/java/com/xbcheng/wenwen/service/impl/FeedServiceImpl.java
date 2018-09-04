@@ -1,5 +1,7 @@
 package com.xbcheng.wenwen.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xbcheng.wenwen.mapper.FeedMapper;
 import com.xbcheng.wenwen.model.Feed;
 import com.xbcheng.wenwen.service.FeedService;
@@ -26,8 +28,11 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public List<Feed> getUserFeeds(List<Integer> userIdList) {
-        return feedMapper.getUserFeeds(userIdList);
+    public PageInfo<Feed> getUserFeeds(List<Integer> userIdList,int pageNum,int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Feed> feeds = feedMapper.getUserFeeds(userIdList);
+        PageInfo<Feed> pageInfo = new PageInfo<>(feeds);
+        return pageInfo;
     }
 
     @Override

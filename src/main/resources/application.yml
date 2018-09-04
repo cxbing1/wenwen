@@ -6,6 +6,12 @@
 #    driver-class-name: com.mysql.jdbc.Driver
 mybatis:
   mapperLocations: classpath:mybatis/mapper/*.xml
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
 spring:
   data:
     elasticsearch:
@@ -49,4 +55,4 @@ logging:
   level:
     com.xbcheng: debug
 server:
-  port: 8080
+  port: 8081

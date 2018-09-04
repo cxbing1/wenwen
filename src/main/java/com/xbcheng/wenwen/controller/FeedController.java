@@ -1,6 +1,8 @@
 package com.xbcheng.wenwen.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.xbcheng.wenwen.model.Feed;
+import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
 import com.xbcheng.wenwen.service.FeedService;
 import com.xbcheng.wenwen.service.FollowService;
@@ -10,7 +12,9 @@ import com.xbcheng.wenwen.util.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import sun.swing.BakedArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -34,24 +38,32 @@ public class FeedController {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping("/pullfeeds")
-    public String getPullFeeds(Model model, HttpSession session){
+    @GetMapping("/pullfeeds")
+    public String getPullFeeds(Model model, HttpSession session,
+                               @RequestParam(value="pageNum", defaultValue="1") int pageNum,
+                               @RequestParam(value="pageSize", defaultValue="10") int pageSize){
 
         User user = (User) session.getAttribute("user");
+        List<Integer> followees = null;
+        if(user!=null){
+            followees = followService.getFollowees(user.getId(),EntityType.ENTITY_USER,0,10);
+        }
 
-        List<Integer> followees = followService.getFollowees(user.getId(),EntityType.ENTITY_USER,0,10);
-
-        List<Feed> feeds = feedService.getUserFeeds(followees);
+        PageInfo<Feed> pageInfo = feedService.getUserFeeds(followees,pageNum,pageSize);
         List<Map<String,Object>> feedVos = new ArrayList<>();
-        for(Feed feed : feeds){
+        for(Feed feed : pageInfo.getList()){
+            Question question = questionService.selectById(Integer.parseInt(feed.get("entityId")));
+            if(question==null){
+                continue;
+            }
             Map<String,Object> feedVo = new HashMap<>();
             feedVo.put("user",userService.findById(feed.getUserId()));
-            feedVo.put("question",questionService.selectById(Integer.parseInt(feed.get("entityId"))));
+            feedVo.put("question",question);
             feedVo.put("feed",feed);
 
             feedVos.add(feedVo);
         }
-
+        model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("feedVos",feedVos);
 
         return "feeds";

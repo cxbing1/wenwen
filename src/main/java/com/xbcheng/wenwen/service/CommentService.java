@@ -19,4 +19,6 @@ public interface CommentService {
     List<Comment> selectByEntity(int entityId, int entityType);
 
     List<Comment> selectByUserId(int userId);
+
+    public int delectComent(Integer id);
 }

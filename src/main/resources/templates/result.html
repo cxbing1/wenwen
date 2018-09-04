@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-#set($bodyclass = "page-search")
 <div th:replace="header::html"></div>
 <link rel="stylesheet" href="../styles/result.css">
 <link rel="stylesheet" href="../styles/detail.css">
+<link rel="stylesheet" href="../styles/pages.css" type="text/css" />
 <div class="zg-wrap zu-main clearfix" role="main">
     <div class="zu-main-content">
+        <i class="zg-icon zg-icon-feedlist"></i>查询结果
+        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
+
         <div class="zu-main-content-inner">
             <ul class="list contents navigable">
-                #foreach($vo in $vos)
-                <li class="item clearfix">
+                <li class="item clearfix" th:each="vo:${questionVos}">
                     <div class="title">
-                        <a target="_blank" href="/user/$!{vo.user.id}" class="js-title-link">$!{vo.question.title}</a>
+                        <a target="_blank" th:href="@{'/question/'+${vo.question.id}}" class="js-title-link">[[${vo.question.title}]]</a>
                     </div>
                     <div class="content">
 
@@ -19,15 +21,17 @@
                             <li class="answer-item clearfix">
                                 <div class="entry answer">
                                     <div class="entry-left hidden-phone">
-                                        <a class="zm-item-vote-count hidden-expanded js-expand js-vote-count" data-bind-votecount="">${vo.followCount}</a>
+                                        <a class="zm-item-vote-count hidden-expanded js-expand js-vote-count" data-bind-votecount="">[[${vo.followCount}]]</a>
                                     </div>
                                     <div class="entry-body">
                                         <div class="entry-meta">
-                                            <strong class="author-line"><a class="author" href="/user/$!{vo.user.id}">$!{vo.user.name}</a>，$data.format('yyyy-MM-dd HH:mm:ss', $!{vo.question.createdDate})</strong>
+                                            <strong class="author-line"><a class="author" th:href="@{'/user/'+${vo.user.id}}">[[${vo.user.name}]]</a>
+                                                ，[[${#dates.format(vo.question.createdDate,'yyyy-MM-dd HH:mm:ss')}]]</strong>
                                         </div>
                                         <div class="entry-content js-collapse-body">
-                                            <div class="summary hidden-expanded" style="">
-                                            $!{vo.question.content}
+                                            <div class="summary hidden-expanded" style="" >
+                                                <div class="zh-summary summary clearfix" th:utext="${vo.question.content}" th:if="${#strings.length(vo.question.content)}<=99">问题内容</div>
+                                                <div class="zh-summary summary clearfix" th:utext="${#strings.substring(vo.question.content,0,100)+'...'}" th:if="${#strings.length(vo.question.content)}>99">问题内容</div>
                                             </div>
                                         </div>
                                     </div>
@@ -35,11 +39,21 @@
                             </li>
                         </ul>
                     </div>
+                    <HR style="color: blue" width="80%" color=#987cb9 SIZE=1>
                 </li>
-                #end
             </ul>
         </div>
     </div>
+</div>
+<div class="technorati" th:if="${pageInfo.size}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
+    <a th:href="@{'index?pageNum=1'}" th:unless="${pageInfo.isFirstPage}">首页</a>
+    <a class="disabled" th:if="${pageInfo.pageNum}>1" th:href="@{'search?q='+${keyword}+'&pageNum='+${pageInfo.prePage}}"> < </a>
+    <span th:each="page:${#numbers.sequence(startPage,endPage)}"  >
+                            <span class="current" th:if="${page}==${pageInfo.pageNum}">[[${page}]]</span>
+                            <a th:if="${page}!=${pageInfo.pageNum} and ${page}!=0"  th:href="@{'search?q='+${keyword}+'&pageNum='+${page}}">[[${page}]]</a>
+                        </span>
+    <a class="disabled" th:if="${pageInfo.pageNum}<${pageInfo.pages}" th:href="@{'search?keyword='+${keyword}+'&q='+${pageInfo.nextPage}}"> > </a>
+    <a th:href="@{'index?pageNum='+${pageInfo.pages}}" th:unless="${pageInfo.isLastPage}">末页</a>
 </div>
 <div th:include="js::html" ></div>
 

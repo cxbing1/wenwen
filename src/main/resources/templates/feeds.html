@@ -4,15 +4,17 @@
 
 <link rel="stylesheet" href="../styles/index.css">
 <link rel="stylesheet" href="../styles/detail.css">
+<link rel="stylesheet" href="../styles/pages.css">
     <div class="zg-wrap zu-main clearfix " role="main">
         <div class="zu-main-content">
             <div class="zu-main-content-inner">
                 <div class="zg-section" id="zh-home-list-title">
-                    <i class="zg-icon zg-icon-feedlist"></i>关注动态
+                    <i class="zg-icon zg-icon-feedlist" ></i><span th:text="${session.user}?'关注动态':'发现'"></span>
+
                     <input type="hidden" id="is-topstory">
-                    <span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
+                    <!--<span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
                         <a href="https://nowcoder.com/settings/filter" class="zg-link-gray-normal">
-                            <i class="zg-icon zg-icon-settings"></i>设置</a></span>
+                            <i class="zg-icon zg-icon-settings"></i>设置</a></span>-->
                 </div>
                 <div class="zu-main-feed-con navigable" data-feedtype="topstory" id="zh-question-list" data-widget="navigable" data-navigable-options="{&quot;items&quot;:&quot;&gt; .zh-general-list .feed-content&quot;,&quot;offsetTop&quot;:-82}">
                     <a href="javascript:;" class="zu-main-feed-fresh-button" id="zh-main-feed-fresh-button" style="display:none"></a>
@@ -47,9 +49,21 @@
                             </div>
                         </div>
                     </div>
-                    <a href="javascript:;" id="zh-load-more" data-method="next" class="zg-btn-white zg-r3px zu-button-more" style="">更多</a></div>
+                    <div class="yahoo2" th:if="${pageInfo.pages}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
+                        <a th:href="@{'index?pageNum=1'}" th:unless="${pageInfo.isFirstPage}">首页</a>
+                        <a class="disabled" th:if="${pageInfo.pageNum}>1" th:href="@{'index?pageNum='+${pageInfo.prePage}}"> < </a>
+                        <span th:each="page:${#numbers.sequence(startPage,endPage)}" >
+                            <span class="current" th:if="${page}==${pageInfo.pageNum} ">[[${page}]]</span>
+                            <a th:if="${page}!=${pageInfo.pageNum} and ${page}!=0"  th:href="@{'pullfeeds?pageNum='+${page}}">[[${page}]]</a>
+                        </span>
+                        <a class="disabled" th:if="${pageInfo.pageNum}<${pageInfo.pages}" th:href="@{'pullfeeds?pageNum='+${pageInfo.nextPage}}"> > </a>
+                        <a th:href="@{'index?pageNum='+${pageInfo.pages}}" th:unless="${pageInfo.isLastPage}">末页</a>
+                    </div>
+                    <!--<a href="javascript:;" id="zh-load-more" data-method="next" class="zg-btn-white zg-r3px zu-button-more" style="">更多</a></div>
+                    -->
             </div>
         </div>
+    </div>
     </div>
 <div th:include="js::html" ></div>
 <script type="text/javascript" src="/scripts/main/site/detail.js"></script>

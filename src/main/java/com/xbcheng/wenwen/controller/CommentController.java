@@ -11,6 +11,8 @@ import com.xbcheng.wenwen.util.EntityType;
 import com.xbcheng.wenwen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,6 +47,23 @@ public class CommentController {
                                                 .setEntityType(EntityType.ENTITY_QUESTION)
                                                 .setEntityId(questionId)
                                                 .setEntityOwnerId(questionService.selectById(questionId).getUserId()));
+
+        return "redirect:/question/"+questionId;
+    }
+
+    @GetMapping("/deleteComment/{questionId}/{commentId}")
+    public String deleteComment(@PathVariable("questionId") int questionId, @PathVariable("commentId") int commentId, String content, HttpSession session){
+
+
+        User user = (User) session.getAttribute("user");
+
+        if(user==null){
+            return "redirect:/reglogin";
+        }
+        Comment comment = commentService.selectByPrimaryKey(commentId);
+        if(comment.getUserId()==user.getId()){
+            commentService.delectComent(commentId);
+        }
 
         return "redirect:/question/"+questionId;
     }

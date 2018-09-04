@@ -11,5 +11,6 @@ public interface MessageService {
     public List<Message> getConversationList(int userId);
     public int getConversationUnreadCount(String conversationId,Integer userId);
     public int updateHasRead(String conversationId,Integer userId);
+    public int deleteMessage(int id);
 
 }

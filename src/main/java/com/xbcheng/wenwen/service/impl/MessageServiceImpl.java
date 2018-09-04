@@ -61,5 +61,10 @@ public class MessageServiceImpl implements MessageService {
         return messageMapper.updateHasRead(conversationId,userId);
     }
 
+    @Override
+    public int deleteMessage(int id) {
+        return messageMapper.deleteByPrimaryKey(id);
+    }
+
 
 }

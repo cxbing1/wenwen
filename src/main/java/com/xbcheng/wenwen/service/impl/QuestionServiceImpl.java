@@ -1,5 +1,7 @@
 package com.xbcheng.wenwen.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xbcheng.wenwen.mapper.QuestionMapper;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.service.QuestionService;
@@ -10,6 +12,7 @@ import org.springframework.web.util.HtmlUtils;
 import org.unbescape.html.HtmlEscape;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -36,8 +39,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getQuestionList() {
-        return questionMapper.selectSelective(new Question());
+    public PageInfo<Question> getQuestionList(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Question> questionList = questionMapper.selectSelective(new Question());
+        PageInfo<Question> pageInfo = new PageInfo<>(questionList);
+        return pageInfo;
     }
 
     @Override
@@ -50,5 +56,18 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> getByCondition(Question question) {
         return questionMapper.selectSelective(question);
+    }
+
+    @Override
+    public int deleteQuestion(Integer id) {
+        return questionMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public PageInfo<Question> searchQuestion(String keyword,int pageNum,int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Question> questionList = questionMapper.searchQuestion(keyword);
+        PageInfo<Question> pageInfo = new PageInfo<>(questionList);
+        return pageInfo;
     }
 }

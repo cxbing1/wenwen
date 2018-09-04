@@ -25,5 +25,7 @@ public interface QuestionMapper {
 
     List<Question> selectSelective(Question question);
 
-    void updateCommentCount(@Param("id") Integer id);
+    void updateCommentCount(@Param("id") Integer id,@Param("value") Integer value);
+
+    List<Question> searchQuestion(@Param("keyword")String keyword);
 }

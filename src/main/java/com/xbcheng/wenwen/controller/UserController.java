@@ -1,5 +1,7 @@
 package com.xbcheng.wenwen.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xbcheng.wenwen.mapper.UserMapper;
 import com.xbcheng.wenwen.model.Question;
 import com.xbcheng.wenwen.model.User;
@@ -93,7 +95,9 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    public String user(@PathVariable Integer userId,Model model,HttpSession session){
+    public String user(@PathVariable Integer userId,Model model,HttpSession session,
+                       @RequestParam(value="pageNum", defaultValue="1") int pageNum,
+                       @RequestParam(value="pageSize", defaultValue="10") int pageSize){
 
         User user = userService.findById(userId);
 
@@ -108,11 +112,13 @@ public class UserController {
         profileUser.put("followed",followService.isFollower(hostUser.getId(),EntityType.ENTITY_USER,userId));
         profileUser.put("commentCount",commentService.selectByUserId(user.getId()).size());
 
+        PageHelper.startPage(pageNum, pageSize);
         List<Question> questionList = questionService.getQuestionListByUserId(userId);
+        PageInfo<Question> pageInfo = new PageInfo<>(questionList);
 
         List<Map<String,Object>> questionVos = new ArrayList<>();
 
-        for(Question question : questionList){
+        for(Question question : pageInfo.getList()){
             Map<String,Object> questionVo = new HashMap<>();
 
             questionVo.put("question",question);
@@ -120,6 +126,8 @@ public class UserController {
             questionVo.put("followCount",followService.getFollowersCount(EntityType.ENTITY_QUESTION,question.getId()));
             questionVos.add(questionVo);
         }
+
+        model.addAttribute("pageInfo",pageInfo);
 
         model.addAttribute("profileUser",profileUser);
 

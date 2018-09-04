@@ -31,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
         if(commentMapper.insertSelective(comment)<1)
             return ResultUtil.fail();
 
-        questionMapper.updateCommentCount(comment.getEntityId());
+        questionMapper.updateCommentCount(comment.getEntityId(),1);
         return ResultUtil.success();
 
     }
@@ -61,6 +61,13 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserId(userId);
 
         return commentMapper.selectSelective(comment);
+    }
+
+    @Override
+    public int delectComent(Integer id) {
+        questionMapper.updateCommentCount(commentMapper.selectByPrimaryKey(id).getEntityId(),-1);
+        int result = commentMapper.deleteByPrimaryKey(id);
+        return result;
     }
 
 

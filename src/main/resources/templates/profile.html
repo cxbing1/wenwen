@@ -3,6 +3,8 @@
 <div th:replace="header::html"></div>
 <link rel="stylesheet" href="../styles/index.css">
 <link rel="stylesheet" href="../styles/detail.css">
+<link rel="stylesheet" href="../styles/pages.css" type="text/css" />
+
     <div class="zg-wrap zu-main clearfix " role="main">
         <div class="zm-profile-section-wrap zm-profile-followee-page">
             <!--
@@ -50,11 +52,9 @@
             <div class="zu-main-content-inner">
                 <div class="zg-section" id="zh-home-list-title">
                     <i class="zg-icon zg-icon-feedlist"></i>最新动态
-                    <span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
+                    <!--<span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
                         <a href="https://nowcoder.com/settings/filter" class="zg-link-gray-normal">
-                            <i class="zg-icon zg-icon-settings"></i>设置
-                        </a>
-                    </span>
+                            <i class="zg-icon zg-icon-settings"></i>设置</a></span>-->
                 </div>
                 <div class="zu-main-feed-con navigable" data-feedtype="topstory" id="zh-question-list">
                     <div id="js-home-feed-list" class="zh-general-list topstory clearfix">
@@ -111,8 +111,19 @@
                             </div>
                         </div>
                     </div>
-                    <a href="javascript:;" id="zh-load-more" class="zg-btn-white zg-r3px zu-button-more">更多</a>
-                </div>
+                    <div class="green-black" th:if="${pageInfo.size}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
+                        <a th:href="@{'/user/'+${profileUser.user.id}+'?pageNum=1'}" th:unless="${pageInfo.isFirstPage}">首页</a>
+                        <a class="disabled" th:if="${pageInfo.pageNum}>1" th:href="@{'/user/'+${profileUser.user.id}+'/pullfeed?pageNum='+${pageInfo.prePage}}"> < </a>
+                        <span th:each="page:${#numbers.sequence(startPage,endPage)}"  >
+                            <span class="current" th:if="${page}==${pageInfo.pageNum}">[[${page}]]</span>
+                            <a th:if="${page}!=${pageInfo.pageNum} and ${page}!=0"  th:href="@{'/user/'+${profileUser.user.id}+'?pageNum='+${page}}">[[${page}]]</a>
+                        </span>
+                        <a class="disabled" th:if="${pageInfo.pageNum}<${pageInfo.pages}" th:href="@{'/user/'+${profileUser.user.id}+'?pageNum='+${pageInfo.nextPage}}"> > </a>
+                        <a th:href="@{'/user/'+${profileUser.user.id}+'?pageNum='+${pageInfo.pages}}" th:unless="${pageInfo.isLastPage}">末页</a>
+                    </div>
+                    <!--<a href="javascript:;" id="zh-load-more" class="zg-btn-white zg-r3px zu-button-more">更多</a>
+                    -->
+               </div>
             </div>
         </div>
     </div>

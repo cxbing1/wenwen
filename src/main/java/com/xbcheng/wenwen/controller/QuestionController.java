@@ -108,4 +108,25 @@ public class QuestionController {
 
     }
 
+    @GetMapping("/question/delete/{qid}")
+    public String deleteQuestion(@PathVariable("qid") int questionId,HttpSession session){
+
+        User user = (User) session.getAttribute("user");
+
+        if(user==null){
+            return "redirect:/reglogin";
+        }
+
+        Question question = questionService.selectById(questionId);
+        if(question.getUserId()==user.getId()){
+            questionService.deleteQuestion(questionId);
+            return "redirect:/user/"+user.getId();
+        }
+
+        return "redirect:/question/"+questionId;
+
+
+
+    }
+
 }
