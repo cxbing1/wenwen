@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="header::html"></div>
-<link rel="stylesheet" href="../styles/index.css">
-<link rel="stylesheet" href="../styles/detail.css">
-<link rel="stylesheet" href="../styles/pages.css" type="text/css" />
+<link rel="stylesheet" href="/wenwen/styles/index.css">
+<link rel="stylesheet" href="/wenwen/styles/detail.css">
+<link rel="stylesheet" href="/wenwen/styles/pages.css" type="text/css" />
 
     <div class="zg-wrap zu-main clearfix " role="main">
         <div class="zm-profile-section-wrap zm-profile-followee-page">
@@ -27,7 +27,7 @@
                                     <button class="zu-top-add-question" ><a th:href="@{'/msg/detail?conversationUserId='+${profileUser.user.id}}" style="color: white">私信</a></button>
                                 </div>
                                 <a title="Barty" class="zm-item-link-avatar" th:href="@{'/user/'+${profileUser.user.id}}">
-                                    <img th:src="'/images/res/'+${profileUser.user.headUrl}" class="zm-item-img-avatar">
+                                    <img th:src="'/wenwen/images/res/'+${profileUser.user.headUrl}" class="zm-item-img-avatar">
                                 </a>
                                 <div class="zm-list-content-medium">
                                     <h2 class="zm-list-content-title"><a data-tip="p$t$buaabarty" th:href="@{'/user/'+${profileUser.user.id}}" class="zg-link">[[${profileUser.user.name}]]</a></h2>
@@ -64,7 +64,7 @@
                             <div class="feed-item-inner">
                                 <div class="avatar">
                                     <a th:title="${vo.user.name}" data-tip="p$t$amuro1230" class="zm-item-link-avatar" target="_blank" th:href="@{'/user/'+${vo.user.id}}">
-                                        <img th:src="'/images/res/'+${vo.user.headUrl}" class="zm-item-img-avatar"></a>
+                                        <img th:src="'/wenwen/images/res/'+${vo.user.headUrl}" class="zm-item-img-avatar"></a>
                                 </div>
                                 <div class="feed-main">
                                     <div class="feed-content" data-za-module="AnswerItem">
@@ -111,8 +111,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="green-black" th:if="${pageInfo.size}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
-                        <a th:href="@{'/user/'+${profileUser.user.id}+'?pageNum=1'}" th:unless="${pageInfo.isFirstPage}">首页</a>
+                    <div class="green-black" th:if="${pageInfo.pages}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
+                        <a th:href="@{'/user/'+${profileUser.user.id}}" th:unless="${pageInfo.isFirstPage}">首页</a>
                         <a class="disabled" th:if="${pageInfo.pageNum}>1" th:href="@{'/user/'+${profileUser.user.id}+'/pullfeed?pageNum='+${pageInfo.prePage}}"> < </a>
                         <span th:each="page:${#numbers.sequence(startPage,endPage)}"  >
                             <span class="current" th:if="${page}==${pageInfo.pageNum}">[[${page}]]</span>
@@ -128,7 +128,7 @@
         </div>
     </div>
 <div th:include="js::html" ></div>
-<script type="text/javascript" src="/scripts/main/site/profile.js"></script>
+<script type="text/javascript" src="/wenwen/scripts/main/site/profile.js"></script>
 
 </body>
 </html>

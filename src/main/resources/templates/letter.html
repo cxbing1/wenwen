@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="header::html"></div>
-<link rel="stylesheet" media="all" href="../styles/letter.css">
+<link rel="stylesheet" media="all" href="/wenwen/styles/letter.css">
     <div id="main">
         <div class="zg-wrap zu-main clearfix ">
             <ul class="letter-list">
@@ -22,7 +22,7 @@
                     <div class="chat-headbox">
                         <span class="msg-num" th:text="${conversationVo.unread}" th:if="${conversationVo.unread}>0">99+</span>
                         <a class="list-head">
-                            <img alt="头像" th:src="'/images/res/'+${conversationVo.user.headUrl}" >
+                            <img alt="头像" th:src="'/wenwen/images/res/'+${conversationVo.user.headUrl}" >
                         </a>
                     </div>
                     <div class="letter-detail">
@@ -39,7 +39,7 @@
         </div>
     </div>
 <div th:replace="js::foot"></div>
-<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
+<script type="text/javascript" src="/wenwen/scripts/main/site/detail.js"></script>
 
 </body>
 </html>

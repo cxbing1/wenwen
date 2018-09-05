@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="header::html"></div>
-<link rel="stylesheet" href="../styles/detail.css">
+<link rel="stylesheet" href="/wenwen/styles/detail.css">
 <div class="zg-wrap zu-main clearfix with-indention-votebar" itemscope="" itemtype="http://schema.org/Question"
      id="zh-single-question-page" data-urltoken="36301524" role="main">
     <div class="zu-main-content">
@@ -30,8 +30,8 @@
             </div>
             <div class="zm-item-answer-author-info">
                 <a class="zm-item-link-avatar avatar-link" href="" target="_blank" data-tip="p$t$yingxiaodao">
-                    <img th:src="'/images/res/'+${user.headUrl}" class="zm-list-avatar avatar"></a>
-                <a class="author-link" data-tip="p$t$yingxiaodao" target="_blank" href="" th:text="${user.name}"></a>
+                    <img th:src="'/wenwen/images/res/'+${user.headUrl}" class="zm-list-avatar avatar"></a>
+                <a class="author-link" data-tip="p$t$yingxiaodao" target="_blank" th:href="@{'/user/'+${user.id}}" th:text="${user.name}"></a>
             </div>
             <br/>
             <div id="zh-question-detail" class="zm-item-rich-text zm-editable-status-normal">
@@ -59,7 +59,7 @@
                         <div class="list zu-small-avatar-list zg-clear js-user-list">
                             <a th:class="'zm-item-link-avatar js-user-'+${vo.id}" th:href="@{'/user/'+${vo.id}}" th:each="vo:${followUsers}"
                                th:data-original_title="${vo.name}">
-                                <img th:src="'/images/res/'+${vo.headUrl}"
+                                <img th:src="'/wenwen/images/res/'+${vo.headUrl}"
                                      class="zm-item-img-avatar">
                             </a>
                         </div>
@@ -93,8 +93,8 @@
                     <div class="answer-head">
                         <div class="zm-item-answer-author-info">
                             <a class="zm-item-link-avatar avatar-link" href="" target="_blank" data-tip="p$t$yingxiaodao">
-                                <img th:src="'/images/res/'+${commentVo.user.headUrl}" class="zm-list-avatar avatar"></a>
-                            <a class="author-link" data-tip="p$t$yingxiaodao" target="_blank" href="" th:text="${commentVo.user.name}"></a>
+                                <img th:src="'/wenwen/images/res/'+${commentVo.user.headUrl}" class="zm-list-avatar avatar"></a>
+                            <a class="author-link" data-tip="p$t$yingxiaodao" target="_blank" th:href="@{'/user/'+${commentVo.user.id}}" th:text="${commentVo.user.name}"></a>
                         </div>
                         <div class="zm-item-vote-info">
                                 <span class="voters text">
@@ -125,7 +125,7 @@
             <a name="draft"></a>
 
 
-            <form action="/addComment" method="post">
+            <form action="/wenwen/addComment" method="post">
                 <input type="hidden" name="questionId" th:value="${question.id}"/>
             <div id="zh-question-answer-form-wrap" class="zh-question-answer-form-wrap">
                 <div class="zm-editable-editor-wrap" style="">
@@ -147,6 +147,6 @@
     </div>
 </div>
 <div th:include="js::html" ></div>
-<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
+<script type="text/javascript" src="/wenwen/scripts/main/site/detail.js"></script>
 
 </body></html>

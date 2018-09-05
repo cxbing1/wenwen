@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="header::html"></div>
-<link rel="stylesheet" href="../styles/result.css">
-<link rel="stylesheet" href="../styles/detail.css">
-<link rel="stylesheet" href="../styles/pages.css" type="text/css" />
+<link rel="stylesheet" href="/wenwen/styles/result.css">
+<link rel="stylesheet" href="/wenwen/styles/detail.css">
+<link rel="stylesheet" href="/wenwen/styles/pages.css" type="text/css" />
 <div class="zg-wrap zu-main clearfix" role="main">
     <div class="zu-main-content">
         <i class="zg-icon zg-icon-feedlist"></i>查询结果
@@ -45,15 +45,15 @@
         </div>
     </div>
 </div>
-<div class="technorati" th:if="${pageInfo.size}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
-    <a th:href="@{'index?pageNum=1'}" th:unless="${pageInfo.isFirstPage}">首页</a>
+<div class="technorati" th:if="${pageInfo.pages}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
+    <a th:href="@{'search?q='+${keyword}}" th:unless="${pageInfo.isFirstPage}">首页</a>
     <a class="disabled" th:if="${pageInfo.pageNum}>1" th:href="@{'search?q='+${keyword}+'&pageNum='+${pageInfo.prePage}}"> < </a>
     <span th:each="page:${#numbers.sequence(startPage,endPage)}"  >
                             <span class="current" th:if="${page}==${pageInfo.pageNum}">[[${page}]]</span>
                             <a th:if="${page}!=${pageInfo.pageNum} and ${page}!=0"  th:href="@{'search?q='+${keyword}+'&pageNum='+${page}}">[[${page}]]</a>
                         </span>
     <a class="disabled" th:if="${pageInfo.pageNum}<${pageInfo.pages}" th:href="@{'search?keyword='+${keyword}+'&q='+${pageInfo.nextPage}}"> > </a>
-    <a th:href="@{'index?pageNum='+${pageInfo.pages}}" th:unless="${pageInfo.isLastPage}">末页</a>
+    <a th:href="@{'search?q='+${keyword}+'&pageNum='+${pageInfo.pages}}" th:unless="${pageInfo.isLastPage}">末页</a>
 </div>
 <div th:include="js::html" ></div>
 

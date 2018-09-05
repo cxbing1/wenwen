@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="header::html"></div>
-<link rel="stylesheet" href="../../styles/result.css">
-<link rel="stylesheet" href="../../styles/detail.css">
+<link rel="stylesheet" href="/wenwen/styles/result.css">
+<link rel="stylesheet" href="/wenwen/styles/detail.css">
     <div id="main">
         <div class="zg-wrap zu-main clearfix ">
             <div class="zm-profile-section-wrap zm-profile-followee-page">
@@ -27,7 +27,7 @@
                                 </div>
 
                                 <a title="Barty" class="zm-item-link-avatar" th:href="@{'/user/'+${vo.user.id}}">
-                                    <img th:src="'/images/res/'+${vo.user.headUrl}" class="zm-item-img-avatar">
+                                    <img th:src="'/wenwen/images/res/'+${vo.user.headUrl}" class="zm-item-img-avatar">
                                 </a>
                                 <div class="zm-list-content-medium">
                                     <h2 class="zm-list-content-title"><a data-tip="p$t$buaabarty" th:href="@{'/user/'+${vo.user.id}}" class="zg-link" title="Barty">[[${vo.user.name}]]</a></h2>
@@ -52,6 +52,6 @@
         </div>
     </div>
 <div th:include="js::html" ></div>
-<script type="text/javascript" src="/scripts/main/site/follow.js"></script>
+<script type="text/javascript" src="/wenwen/scripts/main/site/follow.js"></script>
 
 </body></html>

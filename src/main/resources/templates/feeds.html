@@ -2,9 +2,9 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="header::html"></div>
 
-<link rel="stylesheet" href="../styles/index.css">
-<link rel="stylesheet" href="../styles/detail.css">
-<link rel="stylesheet" href="../styles/pages.css">
+<link rel="stylesheet" href="/wenwen/styles/index.css">
+<link rel="stylesheet" href="/wenwen/styles/detail.css">
+<link rel="stylesheet" href="/wenwen/styles/pages.css">
     <div class="zg-wrap zu-main clearfix " role="main">
         <div class="zu-main-content">
             <div class="zu-main-content-inner">
@@ -25,7 +25,7 @@
                             <div class="feed-item-inner">
                                 <div class="avatar">
                                     <a th:title="${vo.user.name}" data-tip="p$t$amuro1230" class="zm-item-link-avatar" target="_blank" th:href="@{'/user/'+${vo.feed.userId}}">
-                                        <img th:src="'/images/res/'+${vo.user.headUrl}" class="zm-item-img-avatar"></a>
+                                        <img th:src="'/wenwen/images/res/'+${vo.user.headUrl}" class="zm-item-img-avatar"></a>
                                 </div>
                                 <div class="feed-main">
                                     <div class="feed-content" data-za-module="AnswerItem">
@@ -50,14 +50,14 @@
                         </div>
                     </div>
                     <div class="yahoo2" th:if="${pageInfo.pages}>1" th:with="startPage=${pageInfo.pageNum}-${pageInfo.pageNum}%7,endPage=${startPage}+6,endPage=${endPage}<${pageInfo.pages}?${endPage}:${pageInfo.pages}">
-                        <a th:href="@{'index?pageNum=1'}" th:unless="${pageInfo.isFirstPage}">首页</a>
+                        <a th:href="@{'pullfeeds'}" th:unless="${pageInfo.isFirstPage}">首页</a>
                         <a class="disabled" th:if="${pageInfo.pageNum}>1" th:href="@{'index?pageNum='+${pageInfo.prePage}}"> < </a>
                         <span th:each="page:${#numbers.sequence(startPage,endPage)}" >
                             <span class="current" th:if="${page}==${pageInfo.pageNum} ">[[${page}]]</span>
                             <a th:if="${page}!=${pageInfo.pageNum} and ${page}!=0"  th:href="@{'pullfeeds?pageNum='+${page}}">[[${page}]]</a>
                         </span>
                         <a class="disabled" th:if="${pageInfo.pageNum}<${pageInfo.pages}" th:href="@{'pullfeeds?pageNum='+${pageInfo.nextPage}}"> > </a>
-                        <a th:href="@{'index?pageNum='+${pageInfo.pages}}" th:unless="${pageInfo.isLastPage}">末页</a>
+                        <a th:href="@{'pullfeeds?pageNum='+${pageInfo.pages}}" th:unless="${pageInfo.isLastPage}">末页</a>
                     </div>
                     <!--<a href="javascript:;" id="zh-load-more" data-method="next" class="zg-btn-white zg-r3px zu-button-more" style="">更多</a></div>
                     -->
@@ -66,6 +66,6 @@
     </div>
     </div>
 <div th:include="js::html" ></div>
-<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
+<script type="text/javascript" src="/wenwen/scripts/main/site/detail.js"></script>
 
 </body></html>

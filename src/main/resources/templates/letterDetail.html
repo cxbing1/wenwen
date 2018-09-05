@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="header::html"></div>
-<link rel="stylesheet" media="all" href="../styles/letter.css">
+<link rel="stylesheet" media="all" href="/wenwen/styles/letter.css">
 <div id="main">
 
     <div class="zg-wrap zu-main clearfix ">
         <div th:if="${conversationUser.id}>0">
             发私信给 [[${conversationUser.name}]]:
             <br/>
-            <form action="/msg/sendMessage" method="post">
+            <form action="/wenwen/msg/sendMessage" method="post">
                 <input type="hidden" name="toName" th:value="${conversationUser.name}"/>
                 <div id="zh-question-answer-form-wrap" class="zh-question-answer-form-wrap">
                     <div class="zm-editable-editor-wrap" style="">
@@ -30,7 +30,7 @@
         <ul class="letter-chatlist">
             <li id="msg-item-4009580" th:each="messageVo:${messageVos}">
                 <a class="list-head" th:href="@{'/user/'+${messageVo.user.id}}">
-                    <img alt="头像" th:src="'/images/res/'+${messageVo.user.headUrl}">
+                    <img alt="头像" th:src="'/wenwen/images/res/'+${messageVo.user.headUrl}">
                 </a>
                 <div class="tooltip fade right in">
                     <div class="tooltip-arrow"></div>
@@ -49,7 +49,7 @@
     </div>
 </div>
 <div th:include="js::html" ></div>
-<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
+<script type="text/javascript" src="/wenwen/scripts/main/site/detail.js"></script>
 
 </body>
 </html>
