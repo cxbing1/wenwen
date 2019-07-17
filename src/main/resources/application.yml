@@ -5,6 +5,7 @@
 #    url: jdbc:mysql://localhost:3306/test
 #    driver-class-name: com.mysql.jdbc.Driver
 #    git分支测试-feature
+#    git分支测试-新功能
 mybatis:
   mapperLocations: classpath:mybatis/mapper/*.xml
 
